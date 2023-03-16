@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace Boxinator_API.Controllers
 {
@@ -17,6 +18,7 @@ namespace Boxinator_API.Controllers
         {
             _logger = logger;
         }
+
 
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()

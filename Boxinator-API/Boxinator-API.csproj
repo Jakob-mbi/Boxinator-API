@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Boxinator_API</RootNamespace>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <UserSecretsId>785dc3a1-faa0-4c4a-b4f8-c8cdc4abb3ee</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>

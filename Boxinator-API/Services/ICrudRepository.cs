@@ -7,13 +7,13 @@
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        Task<T> Create(T obj, ID userId);
+        Task<T> Create(T obj);
 
         /// <summary>
         /// Get all rows from table
         /// </summary>
         /// <returns>List of T</returns>
-        Task<IEnumerable<T>> ReadAll(ID userId);
+        Task<IEnumerable<T>> ReadAll();
 
         /// <summary>
         /// Get row from table with id
@@ -21,7 +21,7 @@
         /// <param name="id"></param>
         /// <exception cref="Exception">Thrown if T is not found</exception>
         /// <returns>Object of T</returns>
-        Task<T> ReadById(ID id, ID userId);
+        Task<T> ReadById(ID id);
 
         /// <summary>
         /// Sends a Put 
@@ -29,7 +29,7 @@
         /// <param name="obj"></param>
         /// <exception cref="Exception">Thrown if T is not found</exception>
         /// <returns></returns>
-        Task<T> Update(T obj, ID userId);
+        Task<T> Update(T obj);
 
         /// <summary>
         /// Deletes data with id
@@ -37,6 +37,6 @@
         /// <param name="id"></param>
         /// <exception cref="Exception">Thrown if T is not found</exception>
         /// <returns></returns>
-        Task Delete(ID id, ID userId);
+        Task Delete(ID id);
     }
 }

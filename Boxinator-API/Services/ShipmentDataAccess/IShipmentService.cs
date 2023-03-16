@@ -11,7 +11,24 @@ namespace Boxinator_API.Services.ShipmentDataAccess
         /// <param name="id"></param>
         /// <exception cref="ShipmentNotFoundException">Thrown if franchise is not found</exception>
         /// <returns>IEnumerable of Shipment</returns>
-        Task<IEnumerable<Shipment>> ReadAllShipmentsAllowdForAuthenticatedUser(int id,Roles role);
+        public Task<IEnumerable<Shipment>> ReadAllShipmentsAllowdForAuthenticatedUser(User user);
+
+        /// <summary>
+        /// Get all Shipments allowd for the authenticated user that is Completed
+        /// </summary>
+        /// <param name="id"></param>
+        /// <exception cref="ShipmentNotFoundException">Thrown if franchise is not found</exception>
+        /// <returns>IEnumerable of Shipment</returns>
+        
+        public Task<IEnumerable<Shipment>> ReadAllShipmentsAllowdForAuthenticatedUserThatIsCompleted(User user);
+        /// <summary>
+        /// Get all Shipments allowd for the authenticated user that is Cancelled 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <exception cref="ShipmentNotFoundException">Thrown if franchise is not found</exception>
+        /// <returns>IEnumerable of Shipment</returns>
+        public Task<IEnumerable<Shipment>> ReadAllShipmentsAllowdForAuthenticatedUserThatIsCancelled(User user);
+
 
     }
 }

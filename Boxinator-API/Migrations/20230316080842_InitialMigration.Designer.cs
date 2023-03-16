@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Boxinator_API.Migrations
 {
     [DbContext(typeof(BoxinatorDbContext))]
-    [Migration("20230315142436_initialMigration")]
-    partial class initialMigration
+    [Migration("20230316080842_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,9 +93,6 @@ namespace Boxinator_API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("UserId")
                         .IsRequired()
                         .HasColumnType("int");
@@ -106,8 +103,6 @@ namespace Boxinator_API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DestinationID");
-
-                    b.HasIndex("RoleId");
 
                     b.HasIndex("UserId");
 
@@ -192,12 +187,6 @@ namespace Boxinator_API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Boxinator_API.Models.Roles", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Boxinator_API.Models.User", "User")
                         .WithMany("Shipments")
                         .HasForeignKey("UserId")
@@ -205,8 +194,6 @@ namespace Boxinator_API.Migrations
                         .IsRequired();
 
                     b.Navigation("Destination");
-
-                    b.Navigation("Role");
 
                     b.Navigation("User");
                 });

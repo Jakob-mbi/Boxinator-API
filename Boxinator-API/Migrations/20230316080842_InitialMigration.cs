@@ -5,7 +5,7 @@
 namespace Boxinator_API.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -85,7 +85,6 @@ namespace Boxinator_API.Migrations
                     BoxColor = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DestinationID = table.Column<int>(type: "int", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
@@ -99,17 +98,11 @@ namespace Boxinator_API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Shipments_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Shipments_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -140,11 +133,6 @@ namespace Boxinator_API.Migrations
                 name: "IX_Shipments_DestinationID",
                 table: "Shipments",
                 column: "DestinationID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Shipments_RoleId",
-                table: "Shipments",
-                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shipments_UserId",

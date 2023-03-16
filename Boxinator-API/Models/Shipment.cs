@@ -20,11 +20,7 @@ namespace Boxinator_API.Models
         public Country Destination { get; set; }
         [MaxLength(100)]
         public string? Email { get; set; }
-        [Required]
-        public int RoleId { get; set; }
-
-        [MaxLength(100)]
-        public Roles Role { get; set; }
+       
         [MaxLength(100)]
         public User? User { get; set; }
         [Required]

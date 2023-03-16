@@ -7,7 +7,7 @@ namespace Boxinator_API.Models
         public int Id { get; set; }
         [Required]
         [MaxLength(100)]
-        public string Role { get; set; }
+        public string RoleName { get; set; }
         public ICollection<User> Users { get; set; }
 
 

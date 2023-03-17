@@ -8,6 +8,6 @@ namespace Boxinator_API.Models
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
-        public ICollection<Shipment> Shipments { get; set; }
+        public ICollection<Shipment> ShipmentsList { get; set; }
     }
 }

@@ -19,6 +19,6 @@ namespace Boxinator_API.Models
         [MaxLength(100)]
         public Roles Role { get; set; }
         
-        public ICollection<Shipment>? Shipments { get; set; }
+        public ICollection<Shipment>? ShipmentsList { get; set; }
     }
 }

@@ -1,6 +1,9 @@
 using Boxinator_API.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System.Reflection;
 
 namespace Boxinator_API
@@ -48,6 +51,28 @@ namespace Boxinator_API
             //LowercaseUrls for RouteOptions
             builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt =>
+                {
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidAudience = builder.Configuration["JWT:audience"],
+                        ValidIssuer = builder.Configuration["JWT:issuer"],
+                        IssuerSigningKeyResolver = (token, securityToken, kid, parameters) =>
+                        {
+                            var client = new HttpClient();
+                            var keyuri = builder.Configuration["JWT:key-uri"];
+                            //Retrieves the keys from keycloak instance to verify token
+                            var response = client.GetAsync(keyuri).Result;
+                            var responseString = response.Content.ReadAsStringAsync().Result;
+                            var keys = JsonConvert.DeserializeObject<JsonWebKeySet>(responseString);
+                            return keys.Keys;
+                        }
+
+                    };
+                });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -58,6 +83,8 @@ namespace Boxinator_API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

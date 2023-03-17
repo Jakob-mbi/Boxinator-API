@@ -1,4 +1,5 @@
 using Boxinator_API.Models;
+using Boxinator_API.Services.CountriesDataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -47,6 +48,8 @@ namespace Boxinator_API
 
             //LowercaseUrls for RouteOptions
             builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
+            builder.Services.AddTransient<ICountryService, CountryService>();
 
             var app = builder.Build();
 

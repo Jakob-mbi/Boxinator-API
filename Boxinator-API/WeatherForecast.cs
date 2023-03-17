@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
+
 namespace Boxinator_API
 {
+   
     public class WeatherForecast
     {
         public DateTime Date { get; set; }

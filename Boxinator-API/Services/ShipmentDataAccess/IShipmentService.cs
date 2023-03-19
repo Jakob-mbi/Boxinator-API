@@ -3,7 +3,7 @@ using Boxinator_API.Models;
 
 namespace Boxinator_API.Services.ShipmentDataAccess
 {
-    public interface IShipmentService : ICrudRepository<Shipment, int>
+    public interface IShipmentService : ICrudRepository<Shipment,User, int>
     {
         /// <summary>
         /// Get all Shipments allowd for the authenticated user to view
@@ -11,7 +11,7 @@ namespace Boxinator_API.Services.ShipmentDataAccess
         /// <param name="id"></param>
         /// <exception cref="ShipmentNotFoundException">Thrown if franchise is not found</exception>
         /// <returns>IEnumerable of Shipment</returns>
-        public Task<IEnumerable<Shipment>> ReadAllShipmentsAllowdForAuthenticatedUser(User user);
+        public Task<IEnumerable<Shipment>> ReadAllShipmentsAllowdForUser(User user);
 
         /// <summary>
         /// Get all Shipments allowd for the authenticated user that is Completed

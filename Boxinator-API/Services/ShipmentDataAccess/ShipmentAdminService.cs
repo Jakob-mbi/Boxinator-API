@@ -4,22 +4,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Boxinator_API.Services.ShipmentDataAccess
 {
-    public class ShipmentService : IShipmentService
+    public class ShipmentAdminService : IShipmentService
     {
         private readonly BoxinatorDbContext _context;
 
-        public ShipmentService(BoxinatorDbContext context)
+        public ShipmentAdminService(BoxinatorDbContext context)
         {
             _context = context;
         }
-        public async Task<Shipment> Create(Shipment obj)
+        public async Task<Shipment> Create(Shipment obj, User user)
         {
             await _context.Shipments.AddAsync(obj);
             await _context.SaveChangesAsync();
             return obj;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id, User user)
         {
             var shipment = await _context.Shipments.FindAsync(id);
             if (shipment == null)
@@ -32,22 +32,16 @@ namespace Boxinator_API.Services.ShipmentDataAccess
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Shipment>> ReadAll()
+        public async Task<IEnumerable<Shipment>> ReadAll(User user)
         {
-            return await _context.Shipments.Include(x => x.StatusList).ToListAsync();
+            var shipments = await _context.Shipments.Include(x => x.StatusList).Where(x => x.StatusList.Any(c => c.Name != "cancelled" && c.Name != "completed")).ToListAsync();
+            return shipments != null ? shipments : throw new ShipmentNotFoundException();
         }
 
-        public async Task<IEnumerable<Shipment>> ReadAllShipmentsAllowdForAuthenticatedUser(User user)
+        public async Task<IEnumerable<Shipment>> ReadAllShipmentsAllowdForUser(User user)
         {
 
-            IEnumerable<Shipment> shipments;
-            if(user.Role.RoleName == "Admin")
-            {
-                shipments = await _context.Shipments.Include(x => x.StatusList).Where(x => x.StatusList.Any(c => c.Name != "cancelled" && c.Name != "completed")).ToListAsync();
-                return shipments != null? shipments : throw new ShipmentNotFoundException();
-            }
-
-            shipments = await _context.Shipments.Include(x => x.StatusList).Where(x => x.UserId == user.Id).ToListAsync();
+            var shipments = await _context.Shipments.Include(x => x.StatusList).Where(x => x.UserId == user.Id).ToListAsync();
             return shipments != null ? shipments : throw new ShipmentNotFoundException();
 
         }
@@ -62,7 +56,7 @@ namespace Boxinator_API.Services.ShipmentDataAccess
             throw new NotImplementedException();
         }
 
-        public async Task<Shipment> ReadById(int id)
+        public async Task<Shipment> ReadById(int id, User user)
         {
             var shipment = await _context.Shipments.Include(x => x.StatusList).FirstOrDefaultAsync(x => x.Id == id);
 
@@ -74,7 +68,7 @@ namespace Boxinator_API.Services.ShipmentDataAccess
             return shipment;
         }
 
-        public async Task<Shipment> Update(Shipment obj)
+        public async Task<Shipment> Update(Shipment obj, User user)
         {
             var shipment = await _context.Shipments.AnyAsync(x => x.Id == obj.Id);
             if (!shipment)

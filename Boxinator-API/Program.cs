@@ -1,4 +1,5 @@
 using Boxinator_API.Models;
+using Boxinator_API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +14,18 @@ namespace Boxinator_API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+
+            string myCorsPolicy = "_myAllowSpecificOrigins";
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: myCorsPolicy,
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
 
             // Add services to the container.
             builder.Services.AddControllers();
@@ -39,14 +52,17 @@ namespace Boxinator_API
             });
 
 
+            //SQLConnectionString
+            builder.Services.AddDbContext<BoxinatorDbContext>(
+                options =>
+                {
+                    options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection"));
+                });
             //AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-
-            //SQLConnectionString
-            builder.Services.AddDbContext<BoxinatorDbContext>(options =>
-                options.UseSqlServer(
-                    builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddTransient<IUserService, UserService>();
 
             //LowercaseUrls for RouteOptions
             builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
@@ -75,6 +91,10 @@ namespace Boxinator_API
                 });
             var app = builder.Build();
 
+            app.UseCors(myCorsPolicy);
+
+            app.MapGet("/", () => "Hello World!");
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -87,10 +107,12 @@ namespace Boxinator_API
             app.UseAuthentication();
 
             app.UseAuthorization();
+            app.UseAuthentication();// added for test
 
             app.MapControllers();
 
             app.Run();
         }
+
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Boxinator_API.Models
+namespace Boxinator_API.DTOs
 {
-    public class User
+    public class UserCreateDto
     {
-        public int Id { get; set; }
         [Required]
         public string Sub { get; set; }
         public string? DateOfBirth { get; set; }
@@ -15,10 +14,5 @@ namespace Boxinator_API.Models
         [MaxLength(100)]
         public string? ContactNumber { get; set; }
         public int RoleId { get; set; }
-        [Required]
-        [MaxLength(100)]
-        public Roles Role { get; set; }
-        
-        public ICollection<Shipment>? ShipmentsList { get; set; }
     }
 }

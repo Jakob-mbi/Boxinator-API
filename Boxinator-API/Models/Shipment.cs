@@ -28,7 +28,7 @@ namespace Boxinator_API.Models
         [Required]
         [Range(typeof(decimal), "0", "1000")]
         public decimal Price { get; set; }
-        public ICollection<Status> Status { get; set; }
+        public ICollection<Status> StatusList { get; set; }
 
     }
 }

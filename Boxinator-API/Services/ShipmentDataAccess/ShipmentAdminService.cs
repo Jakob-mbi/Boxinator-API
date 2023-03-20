@@ -4,6 +4,11 @@ namespace Boxinator_API.Services.ShipmentDataAccess
 {
     public class ShipmentAdminService : IShipmentAdminService
     {
+        public Task DeleteShipment(int shipmentId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<IEnumerable<Shipment>> ReadAllCancelledShipmentsForAdmin()
         {
             throw new NotImplementedException();
@@ -19,7 +24,27 @@ namespace Boxinator_API.Services.ShipmentDataAccess
             throw new NotImplementedException();
         }
 
+        public Task<Shipment> ReadShipmentByCustomer(string userSub)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<Shipment> ReadShipmentById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Shipment> ReadShipmentByIdAdmin(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Shipment> UpdateShipment(Shipment obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Shipment> UpdateShipmentAdmin(int shipmentId)
         {
             throw new NotImplementedException();
         }

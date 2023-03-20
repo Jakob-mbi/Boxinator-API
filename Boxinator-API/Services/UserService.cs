@@ -47,7 +47,7 @@ namespace Boxinator_API.Services
 
         public async Task<User> GetUserById(int id)
         {
-            var user = await _context.Users.Include(x => x.ShipmentsList).FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _context.Users.Include(x => x.ShipmentsList).FirstOrDefaultAsync(x => x.Sub == "test");
             if(user is null)
             {
                 throw new UserNotFoundException(id);
@@ -72,7 +72,7 @@ namespace Boxinator_API.Services
                 .SingleOrDefaultAsync(u => u.Sub == user.Sub);
             if (existingUser is null)
             {
-                throw new UserNotFoundException(user.Id);
+                throw new UserNotFoundException(2);
             }
             existingUser.DateOfBirth = user.DateOfBirth;
             existingUser.Country = user.Country;

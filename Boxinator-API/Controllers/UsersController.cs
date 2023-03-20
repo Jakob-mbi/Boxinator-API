@@ -86,7 +86,7 @@ namespace Boxinator_API.Controllers
         {
             var user = _mapper.Map<User>(userCreateDto);
             await _userService.AddUser(user);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(GetUser), new { id = user.Sub }, user);
         }
 
         // DELETE: api/Users/5
@@ -132,7 +132,7 @@ namespace Boxinator_API.Controllers
 
         private bool UserExists(int id)
         {
-            return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Users?.Any(e => e.Sub == "test")).GetValueOrDefault();
         }
     }
 }

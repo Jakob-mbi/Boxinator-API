@@ -54,10 +54,8 @@ namespace Boxinator_API.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Sub = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sub = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DateOfBirth = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ZipCode = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     ContactNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -65,13 +63,13 @@ namespace Boxinator_API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Sub);
                     table.ForeignKey(
                         name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,7 +83,7 @@ namespace Boxinator_API.Migrations
                     BoxColor = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DestinationID = table.Column<int>(type: "int", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserSub = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -96,34 +94,34 @@ namespace Boxinator_API.Migrations
                         column: x => x.DestinationID,
                         principalTable: "Countries",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_Shipments_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Shipments_Users_UserSub",
+                        column: x => x.UserSub,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Sub",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ShipmentStatus",
                 columns: table => new
                 {
-                    ShipmentsId = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false)
+                    ShipmentsListId = table.Column<int>(type: "int", nullable: false),
+                    StatusListId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShipmentStatus", x => new { x.ShipmentsId, x.StatusId });
+                    table.PrimaryKey("PK_ShipmentStatus", x => new { x.ShipmentsListId, x.StatusListId });
                     table.ForeignKey(
-                        name: "FK_ShipmentStatus_Shipments_ShipmentsId",
-                        column: x => x.ShipmentsId,
+                        name: "FK_ShipmentStatus_Shipments_ShipmentsListId",
+                        column: x => x.ShipmentsListId,
                         principalTable: "Shipments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ShipmentStatus_Status_StatusId",
-                        column: x => x.StatusId,
+                        name: "FK_ShipmentStatus_Status_StatusListId",
+                        column: x => x.StatusListId,
                         principalTable: "Status",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -135,14 +133,14 @@ namespace Boxinator_API.Migrations
                 column: "DestinationID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shipments_UserId",
+                name: "IX_Shipments_UserSub",
                 table: "Shipments",
-                column: "UserId");
+                column: "UserSub");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShipmentStatus_StatusId",
+                name: "IX_ShipmentStatus_StatusListId",
                 table: "ShipmentStatus",
-                column: "StatusId");
+                column: "StatusListId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",

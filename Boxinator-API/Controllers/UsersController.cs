@@ -43,6 +43,7 @@ namespace Boxinator_API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> GetUser(int id)
         {
+            User.Claims.FirstOrDefault
             try
             {
                 return Ok(_mapper.Map<UserDto>(await _userService.GetUserById(id)));

@@ -104,6 +104,8 @@ namespace Boxinator_API
 
             app.UseHttpsRedirection();
 
+            app.UseCors(myCorsPolicy);
+
             app.UseAuthentication();
 
             app.UseAuthorization();

@@ -1,4 +1,5 @@
 ﻿using Boxinator_API.CustomExceptions;
+using Boxinator_API.DTOs.CountryDTOs;
 using Boxinator_API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,9 +41,30 @@ namespace Boxinator_API.Services.CountriesDataAccess
             return country;
         }
 
-        public Task<Country> Update(Country obj)
+        public async Task<Country> Update(PutCountryDTO countryDTO)
         {
-            throw new NotImplementedException();
+            var country = await _context.Countries.FindAsync(countryDTO.Id);
+
+
+            if (country == null)
+            {
+                throw new CountryNotFoundException(countryDTO.Id);
+            }
+
+            try
+            {
+                country.Name = countryDTO.Name;
+                country.Multiplier = countryDTO.Multiplier;
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                // In case of concurrency conflict, reload the entity from the database and try again
+                ex.Entries.Single().Reload();
+                await _context.SaveChangesAsync();
+            }
+
+            return country;
         }
     }
 }

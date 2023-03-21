@@ -9,11 +9,14 @@ using Boxinator_API.Models;
 using Boxinator_API.Services.CountriesDataAccess;
 using Boxinator_API.DTOs.CountryDTOs;
 using Boxinator_API.CustomExceptions;
+using Microsoft.AspNetCore.Cors;
+using System.Net;
 
 namespace Boxinator_API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    //[EnableCors("_myAllowSpecificOrigins")]
     public class CountriesController : ControllerBase
     {
         private readonly ICountryService _countryService;
@@ -68,41 +71,77 @@ namespace Boxinator_API.Controllers
             {
                 return NotFound(new ProblemDetails
                 {
-                    Detail = ex.Message
+                    Detail = ex.Message,
                 });
             }
         }
 
-        //// PUT: api/Countries/5
+        ///// <summary>
+        ///// Update a country 
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <param name="country"></param>
+        ///// <returns></returns>
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutCountry(int id, Country country)
+        //public async Task<IActionResult> PutCountry(int id, [FromBody] PutCountryDTO country)
         //{
         //    if (id != country.Id)
         //    {
         //        return BadRequest();
         //    }
 
-        //    _context.Entry(country).State = EntityState.Modified;
-
         //    try
         //    {
-        //        await _context.SaveChangesAsync();
+        //        await _countryService.Update(country);
         //    }
-        //    catch (DbUpdateConcurrencyException)
+        //    catch (CountryNotFoundException ex)
         //    {
-        //        if (!CountryExists(id))
+        //        return NotFound(new ProblemDetails
         //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
+        //            Detail = ex.Message,
+        //            Status = (int)HttpStatusCode.NotFound
+        //        });
         //    }
-
-        //    return NoContent();
         //}
+
+        /// <summary>
+        /// Update a country 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="country"></param>
+        /// <returns></returns>
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCountry(int id, [FromBody] PutCountryDTO country)
+        {
+            if (id != country.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await _countryService.Update(country);
+            }
+            catch (CountryNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                { 
+                    Detail = ex.Message,
+                });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                // If the concurrency conflict can't be resolved in the service. Return status 409 (conflict)
+                return Conflict(new ProblemDetails
+                { 
+                    Detail = "Concurrency conflict occurred while saving changes. Please refresh and try again." ,
+                });
+            }
+
+            return NoContent();
+        }
 
         //// POST: api/Countries
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

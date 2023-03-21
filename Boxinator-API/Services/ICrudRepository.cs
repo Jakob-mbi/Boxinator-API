@@ -1,6 +1,6 @@
 ﻿namespace Boxinator_API.Services
 {
-    public interface ICrudRepository<T, ID>
+    public interface ICrudRepository<T, P, ID>
     {
         /// <summary>
         /// Post a object of T to the database
@@ -29,7 +29,7 @@
         /// <param name="obj"></param>
         /// <exception cref="Exception">Thrown if T is not found</exception>
         /// <returns></returns>
-        Task<T> Update(T obj);
+        Task<T> Update(P obj);
 
         /// <summary>
         /// Deletes data with id

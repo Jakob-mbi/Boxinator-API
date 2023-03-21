@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Newtonsoft.Json;
+using Boxinator_API.ExtractToken;
 
 namespace Boxinator_API.Controllers
 {
@@ -66,6 +67,7 @@ namespace Boxinator_API.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut()]
+        
         public async Task<IActionResult> PutUser(UserPutDto userPutDto)
         {
 
@@ -73,65 +75,15 @@ namespace Boxinator_API.Controllers
             {
                 return Unauthorized();
             }
+            GetSubClaimFromToken tokenExtractor = new GetSubClaimFromToken();
+            var subClaim = await tokenExtractor.ExtractTokenUserSub(token , _configuration);
 
-            // Extract the JWT token from the Authorization header
-            var jwtToken = token.ToString().Substring("Bearer ".Length).Trim();
-
-            // Retrieve the JsonWebKeySet from Keycloak instance
-            var client = new HttpClient();
-            var keyUri = _configuration["JWT:key-uri"];
-            var response = await client.GetAsync(keyUri);
-            var responseString = await response.Content.ReadAsStringAsync();
-            var keys = JsonConvert.DeserializeObject<JsonWebKeySet>(responseString);
-
-            // Get the kid claim from the JWT token's header
-            var handler = new JwtSecurityTokenHandler();
-            var jwtHeader = handler.ReadJwtToken(jwtToken).Header;
-            var kid = jwtHeader.Kid;
-
-            // Find the appropriate key from the JsonWebKeySet based on the kid claim
-            var key = keys.Keys.FirstOrDefault(k => k.Kid == kid);
-
-            if (key == null)
-            {
-                return BadRequest("Invalid JWT token");
-            }
-
-            var validationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = key,
-                ValidateIssuer = true,
-                ValidIssuer = _configuration["JWT:issuer"],
-                ValidateAudience = true,
-                ValidAudience = _configuration["JWT:audience"]
-            };
-
-            SecurityToken validatedToken;
-            /*handler = new JwtSecurityTokenHandler();*/
-            var claimsPrincipal = handler.ValidateToken(jwtToken, validationParameters, out validatedToken);
-
-            // Get the sub claim from the JWT token
-            var subClaim = claimsPrincipal.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
-
-            if (subClaim != null)
+              if (subClaim != null)
             {
                 return Ok($"this is sub : {subClaim}");
             }
-            return BadRequest("No sub founded"); 
+            return BadRequest("No sub founded");
 
-/*            try
-            {
-                var user = _mapper.Map<User>(userPutDto);
-                await _userService.UpdateUser(user);
-            }catch(UserNotFoundException ex)
-            {
-                return NotFound(new ProblemDetails
-                {
-                    Detail = ex.Message,
-                    Status = (int)HttpStatusCode.NotFound
-                });
-            }*/
 
             return NoContent();
         }

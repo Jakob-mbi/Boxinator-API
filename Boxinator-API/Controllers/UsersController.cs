@@ -43,7 +43,20 @@ namespace Boxinator_API.Controllers
         [Authorize]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
-          return Ok(_mapper.Map<IEnumerable<UserDto>>(await _userService.GetAllUsers()));
+            var subject = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (subject != null)
+            {
+                return Ok($"this is sub : {subject}");
+            }
+            /* return BadRequest("No sub found");*/
+
+            var subClaim = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase));
+            if (subClaim != null)
+            {
+                return Ok($"this is sub : {subClaim}");
+            }
+            return BadRequest("No sub found");
+           // return Ok(_mapper.Map<IEnumerable<UserDto>>(await _userService.GetAllUsers()));
         }
 
         // GET: api/Users/5
@@ -67,11 +80,23 @@ namespace Boxinator_API.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut()]
-        
+        [Authorize]
         public async Task<IActionResult> PutUser(UserPutDto userPutDto)
         {
+            var subject = User.FindFirstValue(ClaimTypes.NameIdentifier);
+             if (subject != null)
+            {
+                return Ok($"this is sub : {subject}");
+            }
+           /* return BadRequest("No sub found");*/
 
-            if (!Request.Headers.TryGetValue("Authorization", out var token))
+            var subClaim = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase));
+            if (subClaim != null)
+            {
+                return Ok($"this is sub : {subClaim}");
+            }
+            return BadRequest("No sub found");
+            /*if (!Request.Headers.TryGetValue("Authorization", out var token))
             {
                 return Unauthorized();
             }
@@ -82,7 +107,7 @@ namespace Boxinator_API.Controllers
             {
                 return Ok($"this is sub : {subClaim}");
             }
-            return BadRequest("No sub founded");
+            return BadRequest("No sub found");*/
 
 
             return NoContent();
@@ -193,7 +218,21 @@ namespace Boxinator_API.Controllers
         [HttpGet("usersSub")]
         public async Task<ActionResult<UserDto>> GetUserSub()
         {
-            if (!Request.Headers.TryGetValue("Authorization", out var token))
+
+            var subject = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (subject != null)
+            {
+                return Ok($"this is sub : {subject}");
+            }
+            /* return BadRequest("No sub found");*/
+
+            var subClaim = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase));
+            if (subClaim != null)
+            {
+                return Ok($"this is sub : {subClaim}");
+            }
+            return BadRequest("No sub found");
+            /*if (!Request.Headers.TryGetValue("Authorization", out var token))
             {
                 return Unauthorized();
             }
@@ -232,7 +271,7 @@ namespace Boxinator_API.Controllers
             };
 
             SecurityToken validatedToken;
-            /*handler = new JwtSecurityTokenHandler();*/
+            *//*handler = new JwtSecurityTokenHandler();*//*
             var claimsPrincipal = handler.ValidateToken(jwtToken, validationParameters, out validatedToken);
 
             // Get the sub claim from the JWT token
@@ -249,7 +288,7 @@ namespace Boxinator_API.Controllers
                     Detail = ex.Message,
                     Status = (int)HttpStatusCode.NotFound
                 });
-            }
+            }*/
         }
 
 

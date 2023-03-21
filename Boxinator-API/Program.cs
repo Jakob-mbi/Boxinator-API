@@ -11,15 +11,15 @@ namespace Boxinator_API
 {
     public class Program
     {
-        private static WebApplicationBuilder _builder;
+      /*  private static WebApplicationBuilder _builder;*/
         public static void Main(string[] args)
         {
-            var _builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(args);
 
 
             string myCorsPolicy = "_myAllowSpecificOrigins";
 
-            _builder.Services.AddCors(options =>
+            builder.Services.AddCors(options =>
             {
                 options.AddPolicy(name: myCorsPolicy,
                     policy =>
@@ -29,16 +29,16 @@ namespace Boxinator_API
             });
 
             // Add services to the container.
-            _builder.Services.AddControllers();
+            builder.Services.AddControllers();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            _builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddEndpointsApiExplorer();
 
             //Swagger Documentaion 
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
-            _builder.Services.AddSwaggerGen(options =>
+            builder.Services.AddSwaggerGen(options =>
             {
               
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -53,33 +53,33 @@ namespace Boxinator_API
 
 
             //SQLConnectionString
-            _builder.Services.AddDbContext<BoxinatorDbContext>(
+            builder.Services.AddDbContext<BoxinatorDbContext>(
                 options =>
                 {
                     options.UseSqlServer(
-                    _builder.Configuration.GetConnectionString("DefaultConnection"));
+                    builder.Configuration.GetConnectionString("DefaultConnection"));
                 });
             //AutoMapper
-            _builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            _builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IUserService, UserService>();
 
             //LowercaseUrls for RouteOptions
-            _builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+            builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
-            _builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
                 {
                     opt.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
-                        ValidAudience = _builder.Configuration["JWT:audience"],
-                        ValidIssuer = _builder.Configuration["JWT:issuer"],
+                        ValidAudience = builder.Configuration["JWT:audience"],
+                        ValidIssuer = builder.Configuration["JWT:issuer"],
                         IssuerSigningKeyResolver = (token, securityToken, kid, parameters) =>
                         {
                             var client = new HttpClient();
-                            var keyuri = _builder.Configuration["JWT:key-uri"];
+                            var keyuri = builder.Configuration["JWT:key-uri"];
                             //Retrieves the keys from keycloak instance to verify token
                             var response = client.GetAsync(keyuri).Result;
                             var responseString = response.Content.ReadAsStringAsync().Result;
@@ -89,7 +89,7 @@ namespace Boxinator_API
 
                     };
                 });
-            var app = _builder.Build();
+            var app = builder.Build();
 
             app.UseCors(myCorsPolicy);
 
@@ -103,6 +103,8 @@ namespace Boxinator_API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

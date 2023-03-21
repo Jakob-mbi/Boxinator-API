@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Boxinator_API.DTOs;
+using Boxinator_API.DTOs.ShipmentDtos;
 using Boxinator_API.Models;
 
 namespace Boxinator_API.Profiles

@@ -1,9 +1,9 @@
 ﻿using Boxinator_API.CustomExceptions;
 using Boxinator_API.Models;
 
-namespace Boxinator_API.Services.ShipmentDataAccess
+namespace Boxinator_API.Services.ShipmentDataAccess.User
 {
-    public interface IShipmentUserService 
+    public interface IShipmentUserService
     {
         /// <summary>
         /// Get all Shipments allowd for the authenticated user to view
@@ -43,7 +43,7 @@ namespace Boxinator_API.Services.ShipmentDataAccess
         /// <param name="userSub"></param>
         /// <exception cref="ShipmentNotFoundException">Thrown if Shipment is not found</exception>
         /// <returns>Shipment</returns>
-        public Task<Shipment> ReadShipmentById(int id,string userSub);
+        public Task<Shipment> ReadShipmentById(int id, string userSub);
 
         /// <summary>
         /// Cancel a Shipment

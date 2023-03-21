@@ -1,5 +1,7 @@
 using Boxinator_API.Models;
 using Boxinator_API.Services;
+using Boxinator_API.Services.ShipmentDataAccess.Admin;
+using Boxinator_API.Services.ShipmentDataAccess.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -63,6 +65,8 @@ namespace Boxinator_API
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IShipmentAdminService, ShipmentAdminService>();
+            builder.Services.AddTransient<IShipmentUserService, ShipmentUserService>();
 
             //LowercaseUrls for RouteOptions
             builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
@@ -107,9 +111,7 @@ namespace Boxinator_API
             app.UseCors(myCorsPolicy);
 
             app.UseAuthentication();
-
             app.UseAuthorization();
-            app.UseAuthentication();// added for test
 
             app.MapControllers();
 

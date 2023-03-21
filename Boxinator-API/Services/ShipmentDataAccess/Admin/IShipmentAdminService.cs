@@ -1,9 +1,9 @@
 ﻿using Boxinator_API.CustomExceptions;
 using Boxinator_API.Models;
 
-namespace Boxinator_API.Services.ShipmentDataAccess
+namespace Boxinator_API.Services.ShipmentDataAccess.Admin
 {
-    public interface IShipmentAdminService 
+    public interface IShipmentAdminService
     {
         /// <summary>
         /// Get all Shipments allowd for the admin to view
@@ -18,7 +18,7 @@ namespace Boxinator_API.Services.ShipmentDataAccess
         /// <exception cref="ShipmentNotFoundException">Thrown if franchise is not found</exception>
         /// <returns>IEnumerable of Shipment</returns>
 
-        public Task<IEnumerable<Shipment>> ReadAllShipmentsForAdmin();
+        public Task<IEnumerable<Shipment>> ReadAllCurrentShipmentsForAdmin();
         /// <summary>
         /// Get all Shipments allowd for the admin that is Cancelled 
         /// </summary>
@@ -41,15 +41,7 @@ namespace Boxinator_API.Services.ShipmentDataAccess
         /// <param name="userSub"></param>
         /// <exception cref="ShipmentNotFoundException">Thrown if Shipment is not found</exception>
         /// <returns>Shipment</returns>
-        public Task<Shipment> ReadShipmentByCustomer(string userSub);
-
-        /// <summary>
-        /// Sends a Put 
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <exception cref="ShipmentNotFoundException">Thrown if Shipment is not found</exception>
-        /// <returns></returns>
-        public Task<Shipment> UpdateShipment(Shipment obj);
+        public Task<IEnumerable<Shipment>> ReadShipmentByCustomer(string userSub);
 
         /// <summary>
         /// Updates a Shipment
@@ -57,7 +49,7 @@ namespace Boxinator_API.Services.ShipmentDataAccess
         /// <param name="shipmentId"></param>
         /// <exception cref="ShipmentNotFoundException">Thrown if Shipment is not found</exception>
         /// <returns></returns>
-        public Task<Shipment> UpdateShipmentAdmin(int shipmentId);
+        public Task<Shipment> UpdateShipmentAdmin(Shipment shipmentObj);
 
         /// <summary>
         /// Deletes Shipment with id

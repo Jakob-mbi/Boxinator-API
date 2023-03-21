@@ -4,8 +4,8 @@ namespace Boxinator_API.Models
 {
     public class User
     {
-        public int Id { get; set; }
-        [Required]
+       
+        [Key]
         public string Sub { get; set; }
         public string? DateOfBirth { get; set; }
         [MaxLength(100)]

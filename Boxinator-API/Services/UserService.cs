@@ -45,7 +45,12 @@ namespace Boxinator_API.Services
             return await _context.Users.Include(x => x.ShipmentsList).ToListAsync();
         }
 
-        public async Task<User> GetUserById(int id)
+        public Task<User> GetUserById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*public async Task<User> GetUserById(int id)
         {
             var user = await _context.Users.Include(x => x.ShipmentsList).FirstOrDefaultAsync(x => x.Id == id);
             if(user is null)
@@ -54,7 +59,7 @@ namespace Boxinator_API.Services
             }
             return user;
         }
-
+*/
         public async Task<User> GetUserBySub(string sub)
         {
             var user = await _context.Users.Include(x => x.ShipmentsList).FirstOrDefaultAsync(x => x.Sub == sub);
@@ -66,7 +71,12 @@ namespace Boxinator_API.Services
             return user;
         }
 
-        public async Task<User> UpdateUser(User user)
+        public Task<User> UpdateUser(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*public async Task<User> UpdateUser(User user)
         {
             var existingUser = await _context.Users
                 .SingleOrDefaultAsync(u => u.Sub == user.Sub);
@@ -82,6 +92,6 @@ namespace Boxinator_API.Services
             await _context.SaveChangesAsync();
 
             return existingUser;
-        }
+        }*/
     }
 }

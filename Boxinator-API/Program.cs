@@ -11,14 +11,15 @@ namespace Boxinator_API
 {
     public class Program
     {
+        private static WebApplicationBuilder _builder;
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var _builder = WebApplication.CreateBuilder(args);
 
 
             string myCorsPolicy = "_myAllowSpecificOrigins";
 
-            builder.Services.AddCors(options =>
+            _builder.Services.AddCors(options =>
             {
                 options.AddPolicy(name: myCorsPolicy,
                     policy =>
@@ -28,17 +29,18 @@ namespace Boxinator_API
             });
 
             // Add services to the container.
-            builder.Services.AddControllers();
+            _builder.Services.AddControllers();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
+            _builder.Services.AddEndpointsApiExplorer();
 
             //Swagger Documentaion 
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
-            builder.Services.AddSwaggerGen(options =>
+            _builder.Services.AddSwaggerGen(options =>
             {
+              
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
@@ -51,44 +53,43 @@ namespace Boxinator_API
 
 
             //SQLConnectionString
-            builder.Services.AddDbContext<BoxinatorDbContext>(
+            _builder.Services.AddDbContext<BoxinatorDbContext>(
                 options =>
                 {
                     options.UseSqlServer(
-                    builder.Configuration.GetConnectionString("DefaultConnection"));
+                    _builder.Configuration.GetConnectionString("DefaultConnection"));
                 });
             //AutoMapper
-            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            _builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            builder.Services.AddTransient<IUserService, UserService>();
+            _builder.Services.AddTransient<IUserService, UserService>();
 
             //LowercaseUrls for RouteOptions
-            builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+            _builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-               .AddJwtBearer(opt =>
-               {
-                   opt.TokenValidationParameters = new TokenValidationParameters
-                   {
-                       ValidateIssuer = true,
-                       ValidateAudience = true,
-                       ValidAudience = builder.Configuration["JWT:audience"],
-                       ValidIssuer = builder.Configuration["JWT:issuer"],
-                       IssuerSigningKeyResolver = (token, securityToken, kid, parameters) =>
-                       {
-                           var client = new HttpClient();
-                           var keyuri = builder.Configuration["JWT:key-uri"];
-                           //Retrieves the keys from keycloak instance to verify token
-                           var response = client.GetAsync(keyuri).Result;
-                           var responseString = response.Content.ReadAsStringAsync().Result;
-                           var keys = JsonConvert.DeserializeObject<JsonWebKeySet>(responseString);
-                           return keys.Keys;
-                       }
+            _builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt =>
+                {
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidAudience = _builder.Configuration["JWT:audience"],
+                        ValidIssuer = _builder.Configuration["JWT:issuer"],
+                        IssuerSigningKeyResolver = (token, securityToken, kid, parameters) =>
+                        {
+                            var client = new HttpClient();
+                            var keyuri = _builder.Configuration["JWT:key-uri"];
+                            //Retrieves the keys from keycloak instance to verify token
+                            var response = client.GetAsync(keyuri).Result;
+                            var responseString = response.Content.ReadAsStringAsync().Result;
+                            var keys = JsonConvert.DeserializeObject<JsonWebKeySet>(responseString);
+                            return keys.Keys;
+                        }
 
-                   };
-               });
-
-            var app = builder.Build();
+                    };
+                });
+            var app = _builder.Build();
 
             app.UseCors(myCorsPolicy);
 
@@ -104,12 +105,13 @@ namespace Boxinator_API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-            app.UseAuthentication();// added for test
 
             app.MapControllers();
 
             app.Run();
         }
+       
+
 
     }
 }

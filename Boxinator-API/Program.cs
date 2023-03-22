@@ -1,6 +1,7 @@
 using Boxinator_API.Models;
 using Boxinator_API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Boxinator_API.Services.CountriesDataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -63,6 +64,7 @@ namespace Boxinator_API
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<ICountryService, CountryService>();
 
             //LowercaseUrls for RouteOptions
             builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
@@ -107,7 +109,6 @@ namespace Boxinator_API
             app.UseAuthentication();
 
             app.UseAuthorization();
-            app.UseAuthentication();// added for test
 
             app.MapControllers();
 

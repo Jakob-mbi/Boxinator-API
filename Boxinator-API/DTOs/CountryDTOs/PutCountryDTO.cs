@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Boxinator_API.Models
+namespace Boxinator_API.DTOs.CountryDTOs
 {
-    public class Country
+    public class PutCountryDTO
     {
         public int Id { get; set; }
         [Required]
@@ -10,6 +10,5 @@ namespace Boxinator_API.Models
         public string Name { get; set; }
         [Required]
         public int Multiplier { get; set; }
-        public ICollection<Shipment>? ShipmentList { get; set; }
     }
 }

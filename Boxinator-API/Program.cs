@@ -64,7 +64,6 @@ namespace Boxinator_API
             //AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IShipmentAdminService, ShipmentAdminService>();
             builder.Services.AddTransient<IShipmentUserService, ShipmentUserService>();
 
@@ -97,8 +96,6 @@ namespace Boxinator_API
 
             app.UseCors(myCorsPolicy);
 
-            app.MapGet("/", () => "Hello World!");
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -107,8 +104,6 @@ namespace Boxinator_API
             }
 
             app.UseHttpsRedirection();
-
-            app.UseCors(myCorsPolicy);
 
             app.UseAuthentication();
             app.UseAuthorization();

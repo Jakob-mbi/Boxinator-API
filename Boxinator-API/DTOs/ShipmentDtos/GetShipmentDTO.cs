@@ -16,9 +16,7 @@ namespace Boxinator_API.DTOs.ShipmentDtos
         public string Destination { get; set; }
 
         public string? Email { get; set; }
-
         public string? registerdSender { get; set; }
-
         public decimal Price { get; set; }
         public List<string> StatusList { get; set; }
     }

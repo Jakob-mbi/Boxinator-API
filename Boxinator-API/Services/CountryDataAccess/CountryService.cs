@@ -14,8 +14,12 @@ namespace Boxinator_API.Services.CountriesDataAccess
             _context = context;
         }
 
-        public Task<Country> Create(Country obj)
+        public async Task<Country> Create(Country country)
         {
+            //_context.Countries.Add(country);
+            //await _context.SaveChangesAsync();
+
+            //return country;
             throw new NotImplementedException();
         }
 
@@ -41,20 +45,10 @@ namespace Boxinator_API.Services.CountriesDataAccess
             return country;
         }
 
-        public async Task<Country> Update(PutCountryDTO countryDTO)
+        public async Task<Country> Update(Country country)
         {
-            var country = await _context.Countries.FindAsync(countryDTO.Id);
-
-
-            if (country == null)
-            {
-                throw new CountryNotFoundException(countryDTO.Id);
-            }
-
             try
             {
-                country.Name = countryDTO.Name;
-                country.Multiplier = countryDTO.Multiplier;
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)

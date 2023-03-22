@@ -11,6 +11,7 @@ using Boxinator_API.DTOs.CountryDTOs;
 using Boxinator_API.CustomExceptions;
 using Microsoft.AspNetCore.Cors;
 using System.Net;
+using AutoMapper;
 
 namespace Boxinator_API.Controllers
 {
@@ -76,35 +77,6 @@ namespace Boxinator_API.Controllers
             }
         }
 
-        ///// <summary>
-        ///// Update a country 
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <param name="country"></param>
-        ///// <returns></returns>
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutCountry(int id, [FromBody] PutCountryDTO country)
-        //{
-        //    if (id != country.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    try
-        //    {
-        //        await _countryService.Update(country);
-        //    }
-        //    catch (CountryNotFoundException ex)
-        //    {
-        //        return NotFound(new ProblemDetails
-        //        {
-        //            Detail = ex.Message,
-        //            Status = (int)HttpStatusCode.NotFound
-        //        });
-        //    }
-        //}
-
         /// <summary>
         /// Update a country 
         /// </summary>
@@ -122,7 +94,19 @@ namespace Boxinator_API.Controllers
 
             try
             {
-                await _countryService.Update(country);
+                var countryToUpdate = await _countryService.ReadById(id);
+
+                if (countryToUpdate == null)
+                {
+                    throw new CountryNotFoundException(id);
+                }
+
+                // Update fields
+                countryToUpdate.Name = country.Name;
+                countryToUpdate.Multiplier = country.Multiplier;
+
+                // Save changes
+                await _countryService.Update(countryToUpdate);
             }
             catch (CountryNotFoundException ex)
             {
@@ -143,44 +127,25 @@ namespace Boxinator_API.Controllers
             return NoContent();
         }
 
-        //// POST: api/Countries
+        ///// <summary>
+        ///// Create a new country in database
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <param name="country"></param>
+        ///// <returns></returns>
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Country>> PostCountry(Country country)
+        //[HttpPost("{id}")]
+        //public async Task<ActionResult<Country>> PostCountry([FromBody] PostCountryDTO country)
         //{
-        //  if (_context.Countries == null)
-        //  {
-        //      return Problem("Entity set 'BoxinatorDbContext.Countries'  is null.");
-        //  }
-        //    _context.Countries.Add(country);
-        //    await _context.SaveChangesAsync();
+        //    //var country = new Country
+        //    //{
+        //    //    Name = countryDTO.Name,
+        //    //    Multiplier = countryDTO.Multiplier
+        //    //};
 
-        //    return CreatedAtAction("GetCountry", new { id = country.Id }, country);
-        //}
+        //    var newCountry = await _countryService.Create(country);
 
-        //// DELETE: api/Countries/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteCountry(int id)
-        //{
-        //    if (_context.Countries == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var country = await _context.Countries.FindAsync(id);
-        //    if (country == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Countries.Remove(country);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
-
-        //private bool CountryExists(int id)
-        //{
-        //    return (_context.Countries?.Any(e => e.Id == id)).GetValueOrDefault();
+        //    return CreatedAtAction("GetCountry", new { id = newCountry.Id }, newCountry);
         //}
     }
 }

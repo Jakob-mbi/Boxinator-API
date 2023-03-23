@@ -3,6 +3,7 @@ using Boxinator_API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Boxinator_API.Migrations
 {
     [DbContext(typeof(BoxinatorDbContext))]
-    partial class BoxinatorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230322141705_SeedData")]
+    partial class SeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -310,26 +313,6 @@ namespace Boxinator_API.Migrations
                             ReciverName = "Bob Thompson",
                             UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a",
                             Weight = 30
-                        },
-                        new
-                        {
-                            Id = 7,
-                            BoxColor = "Pink",
-                            DestinationID = 8,
-                            Price = 400m,
-                            ReciverName = "Emily Davis",
-                            UserSub = "9e305eb4-7639-422d-9432-a3e001c6c5b7",
-                            Weight = 60
-                        },
-                        new
-                        {
-                            Id = 8,
-                            BoxColor = "Orange",
-                            DestinationID = 17,
-                            Price = 300m,
-                            ReciverName = "Bob Davis",
-                            UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a",
-                            Weight = 10
                         });
                 });
 
@@ -484,16 +467,6 @@ namespace Boxinator_API.Migrations
                         {
                             StatusListId = 1,
                             ShipmentsListId = 6
-                        },
-                        new
-                        {
-                            StatusListId = 4,
-                            ShipmentsListId = 7
-                        },
-                        new
-                        {
-                            StatusListId = 5,
-                            ShipmentsListId = 8
                         });
                 });
 

@@ -11,10 +11,12 @@ using Boxinator_API.CustomExceptions;
 using AutoMapper;
 using Boxinator_API.DTOs.ShipmentDtos;
 using System.Net.Mime;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Boxinator_API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "ADMIN")]
     [Route("api/v1/[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]

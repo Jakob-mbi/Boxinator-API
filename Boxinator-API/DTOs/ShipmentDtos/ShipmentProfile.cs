@@ -13,6 +13,7 @@ namespace Boxinator_API.DTOs.ShipmentDtos
                options.MapFrom(model => model.StatusList.Select(status => status.Name).ToList()))
                  .ForMember(dto => dto.Destination, options => options.MapFrom(model => model.Destination.Name));
             CreateMap<PutShipmentDTO, Shipment>();
+            CreateMap<PostShipmentDTO, Shipment>();
         }
             
         

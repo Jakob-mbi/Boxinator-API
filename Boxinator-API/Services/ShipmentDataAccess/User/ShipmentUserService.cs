@@ -30,6 +30,7 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
 
         public async Task<Shipment> CreateNewShipment(Shipment obj)
         {
+            obj.StatusList.Add(await _context.Status.FirstOrDefaultAsync(c=> c.Id == 1));
             await _context.Shipments.AddAsync(obj);
             await _context.SaveChangesAsync();
             return obj;
@@ -57,6 +58,11 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
         {
             var shipment = await _context.Shipments.Include(x => x.StatusList).FirstOrDefaultAsync(x => x.Id == id && x.UserSub == userSub);
             return shipment != null ? shipment : throw new ShipmentNotFoundException();
+        }
+        public async Task<Status> ReadStatusById(int id)
+        {
+            var status = await _context.Status.FirstOrDefaultAsync(x => x.Id == id);
+            return status != null ? status : throw new StatusNotFoundException();
         }
     }
 }

@@ -3,7 +3,7 @@ using Boxinator_API.Models;
 
 namespace Boxinator_API.Services.ShipmentDataAccess.User
 {
-    public interface IShipmentUserService
+    public interface IShipmentUserService : IShipmentService
     {
         /// <summary>
         /// Get all Shipments allowd for the authenticated user to view

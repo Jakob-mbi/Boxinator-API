@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Boxinator_API.CustomExceptions;
 using Boxinator_API.DTOs.ShipmentDtos;
+using Boxinator_API.DTOs.StatusDtos;
+using Boxinator_API.Models;
 using Boxinator_API.Services.ShipmentDataAccess.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -83,6 +85,18 @@ namespace Boxinator_API.Controllers
                     Detail = ex.Message
                 });
             }
+        }
+        /// <summary>
+        /// create new shipment
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("new")]
+        public async Task<ActionResult<PostShipmentDTO>> PostShipmentForRegisterUser([FromBody] PostShipmentDTO newShipment)
+        {
+            string subject = sub;
+            var shipment = _mapper.Map<Shipment>(newShipment);
+            await _shipmentContext.CreateNewShipment(shipment);
+            return CreatedAtAction(nameof(GetshipmentById), new { id = shipment.Id }, shipment);
         }
     }
 }

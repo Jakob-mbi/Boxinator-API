@@ -1,5 +1,7 @@
 using Boxinator_API.Models;
 using Boxinator_API.Services;
+using Boxinator_API.Services.ShipmentDataAccess.Admin;
+using Boxinator_API.Services.ShipmentDataAccess.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Boxinator_API.Services.CountriesDataAccess;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +65,8 @@ namespace Boxinator_API
             //AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            builder.Services.AddTransient<IShipmentAdminService, ShipmentAdminService>();
+            builder.Services.AddTransient<IShipmentUserService, ShipmentUserService>();
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<ICountryService, CountryService>();
 
@@ -95,8 +99,6 @@ namespace Boxinator_API
 
             app.UseCors(myCorsPolicy);
 
-            app.MapGet("/", () => "Hello World!");
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -107,7 +109,6 @@ namespace Boxinator_API
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.MapControllers();

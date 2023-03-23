@@ -5,7 +5,6 @@ using System.Net.Mime;
 namespace Boxinator_API.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {

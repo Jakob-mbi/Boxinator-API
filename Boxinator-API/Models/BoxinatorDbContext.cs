@@ -63,7 +63,9 @@ namespace Boxinator_API.Models
             new Shipment { Id = 3, ReciverName = "Bob Thompson", Weight = 70, BoxColor = "Green", DestinationID = 10, UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a", Price = 300 },
             new Shipment { Id = 4, ReciverName = "John Smith", Weight = 50, BoxColor = "Yellow", DestinationID = 3, UserSub = "e1c3c5df-7f33-4e8f-9c17-ff04627347ee", Price = 200 },
             new Shipment { Id = 5, ReciverName = "Emily Davis", Weight = 20, BoxColor = "Purple", DestinationID = 8, UserSub = "9e305eb4-7639-422d-9432-a3e001c6c5b7", Price = 400 },
-            new Shipment { Id = 6, ReciverName = "Bob Thompson", Weight = 30, BoxColor = "Orange", DestinationID = 17, UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a", Price = 300 }
+            new Shipment { Id = 6, ReciverName = "Bob Thompson", Weight = 30, BoxColor = "Orange", DestinationID = 17, UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a", Price = 300 },
+             new Shipment { Id = 7, ReciverName = "Emily Davis", Weight = 60, BoxColor = "Pink", DestinationID = 8, UserSub = "9e305eb4-7639-422d-9432-a3e001c6c5b7", Price = 400 },
+            new Shipment { Id = 8, ReciverName = "Bob Davis", Weight = 10, BoxColor = "Orange", DestinationID = 17, UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a", Price = 300 }
             );
             modelBuilder.Entity<Shipment>()
                .HasMany(p => p.StatusList)
@@ -82,7 +84,9 @@ namespace Boxinator_API.Models
                            new { StatusListId = 1, ShipmentsListId = 3},
                            new { StatusListId = 1, ShipmentsListId = 4},
                            new { StatusListId = 1, ShipmentsListId = 5},
-                           new { StatusListId = 1, ShipmentsListId = 6 }
+                           new { StatusListId = 1, ShipmentsListId = 6 },
+                            new { StatusListId = 4, ShipmentsListId = 7 },
+                           new { StatusListId = 5, ShipmentsListId = 8 }
 
                        );
                    });

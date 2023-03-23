@@ -57,6 +57,6 @@ namespace Boxinator_API.Services.ShipmentDataAccess.Admin
         /// <param name="shipmentId"></param>
         /// <exception cref="ShipmentNotFoundException">Thrown if Shipment is not found</exception>
         /// <returns></returns>
-        public Task DeleteShipment(int shipmentId);
+        public Task DeleteShipment(Shipment shipment);
     }
 }

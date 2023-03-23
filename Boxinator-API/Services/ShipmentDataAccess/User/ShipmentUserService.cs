@@ -37,7 +37,7 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
 
         public async Task<IEnumerable<Shipment>> ReadAllCancelledShipmentsForAuthenticatedUser(string userSub)
         {
-            var shipments = await _context.Shipments.Include(x => x.StatusList).Where(x => x.StatusList.Any(c => c.Name.ToLower() == "cancelled") && x.UserSub == userSub).ToListAsync();
+            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(x => x.Destination).Where(x => x.StatusList.Any(c => c.Name.ToLower() == "cancelled") && x.UserSub == userSub).ToListAsync();
             return shipments != null ? shipments : throw new ShipmentNotFoundException();
         }
 

@@ -10,11 +10,15 @@ using Boxinator_API.Services.ShipmentDataAccess.Admin;
 using Boxinator_API.CustomExceptions;
 using AutoMapper;
 using Boxinator_API.DTOs.ShipmentDtos;
+using System.Net.Mime;
 
 namespace Boxinator_API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class ShipmentAdminController : ControllerBase
     {
         private readonly IShipmentAdminService _shipmentContext;
@@ -26,9 +30,13 @@ namespace Boxinator_API.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/ShipmentAdmin
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ShipmentController>>> GetShipments()
+
+        /// <summary>
+        /// List of current shipments
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("current")]
+        public async Task<ActionResult<IEnumerable<GetShipmentDTO>>> GetShipments()
         {
             try
             {
@@ -43,94 +51,134 @@ namespace Boxinator_API.Controllers
             }
 
         }
+        /// <summary>
+        /// List of cancelled shipments
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("cancelled")]
+        public async Task<ActionResult<IEnumerable<GetShipmentDTO>>> GetCancelledShipments()
+        {
+            try
+            {
+                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllCancelledShipmentsForAdmin()));
+            }
+            catch (ShipmentNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
 
-        //// GET: api/ShipmentAdmin/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Shipment>> GetShipment(int id)
-        //{
-        //  if (_context.Shipments == null)
-        //  {
-        //      return NotFound();
-        //  }
-        //    var shipment = await _context.Shipments.FindAsync(id);
+        }
+        /// <summary>
+        /// List of completed shipments
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("completed")]
+        public async Task<ActionResult<IEnumerable<GetShipmentDTO>>> GetCompletedShipments()
+        {
+            try
+            {
+                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllCompletedShipmentsForAdmin()));
+            }
+            catch (ShipmentNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
 
-        //    if (shipment == null)
-        //    {
-        //        return NotFound();
-        //    }
+        }
+        /// <summary>
+        /// Get shipments by id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetShipmentDTO>> GetShipmentsbyId(int id)
+        {
+            try
+            {
+                return Ok(_mapper.Map<GetShipmentDTO>(await _shipmentContext.ReadShipmentByIdAdmin(id)));
+            }
+            catch (ShipmentNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
 
-        //    return shipment;
-        //}
+        }
+        /// <summary>
+        /// List of shipments by Customer
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("customer/{customerid}")]
+        public async Task<ActionResult<IEnumerable<GetShipmentDTO>>> GetShipmentsbyCustomer(string customerid)
+        {
+            try
+            {
+                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadShipmentByCustomer(customerid)));
+            }
+            catch (ShipmentNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
 
-        //// PUT: api/ShipmentAdmin/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutShipment(int id, Shipment shipment)
-        //{
-        //    if (id != shipment.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+        }
+        /// <summary>
+        /// Delete shipments by id
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteShipment(int id)
+        {
+            try
+            {
+                var shipment = await _shipmentContext.ReadShipmentByIdAdmin(id);
+                await _shipmentContext.DeleteShipment(shipment);
+            }
+            catch (ShipmentNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
 
-        //    _context.Entry(shipment).State = EntityState.Modified;
+            return NoContent();
+        }
+        /// <summary>
+        /// Update shipments by id
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> PutCharacter(int id, [FromBody] PutShipmentDTO shipment)
+        {
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ShipmentExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            if (id != shipment.Id)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var obj = _mapper.Map<Shipment>(shipment);
+                return Ok(await _shipmentContext.UpdateShipmentAdmin(obj));
+            }
+            catch (ShipmentNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
+        }
 
-        //    return NoContent();
-        //}
-
-        //// POST: api/ShipmentAdmin
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Shipment>> PostShipment(Shipment shipment)
-        //{
-        //  if (_context.Shipments == null)
-        //  {
-        //      return Problem("Entity set 'BoxinatorDbContext.Shipments'  is null.");
-        //  }
-        //    _context.Shipments.Add(shipment);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetShipment", new { id = shipment.Id }, shipment);
-        //}
-
-        //// DELETE: api/ShipmentAdmin/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteShipment(int id)
-        //{
-        //    if (_context.Shipments == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var shipment = await _context.Shipments.FindAsync(id);
-        //    if (shipment == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Shipments.Remove(shipment);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
-
-        //private bool ShipmentExists(int id)
-        //{
-        //    return (_context.Shipments?.Any(e => e.Id == id)).GetValueOrDefault();
-        //}
+        
     }
 }

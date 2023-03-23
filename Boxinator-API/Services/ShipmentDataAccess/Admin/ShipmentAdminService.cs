@@ -12,48 +12,40 @@ namespace Boxinator_API.Services.ShipmentDataAccess.Admin
         {
             _context = context;
         }
-        public async Task DeleteShipment(int shipmentId)
+        public async Task DeleteShipment(Shipment shipment)
         {
-            var shipment = await _context.Shipments.FindAsync(shipmentId);
-            if (shipment == null)
-            {
-                throw new ShipmentNotFoundException();
-            }
-            shipment.StatusList.Clear();
-            shipment.UserSub = null;
-            shipment.User = null;
             _context.Shipments.Remove(shipment);
             await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Shipment>> ReadAllCancelledShipmentsForAdmin()
         {
-            var shipments = await _context.Shipments.Include(x => x.StatusList).Where(x => x.StatusList.Any(c => c.Name.ToLower() == "cancelled")).ToListAsync();
+            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(x => x.Destination).Where(x => x.StatusList.Any(c => c.Name.ToLower() == "cancelled")).ToListAsync();
             return shipments != null ? shipments : throw new ShipmentNotFoundException();
         }
 
         public async Task<IEnumerable<Shipment>> ReadAllCompletedShipmentsForAdmin()
         {
-            var shipments = await _context.Shipments.Include(x => x.StatusList).Where(x => x.StatusList.Any(c => c.Name.ToLower() == "completed")).ToListAsync();
+            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(x => x.Destination).Where(x => x.StatusList.Any(c => c.Name.ToLower() == "completed")).ToListAsync();
             return shipments != null ? shipments : throw new ShipmentNotFoundException();
         }
 
         public async Task<IEnumerable<Shipment>> ReadAllCurrentShipmentsForAdmin()
         {
-            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(z => z.Destination).Where(x => x.StatusList.Any(c => c.Name.ToLower() != "completed" && c.Name.ToLower() != "cancelled")).ToListAsync();
+            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(x => x.Destination).Where(x => x.StatusList.Any(c => c.Name.ToLower() != "completed" && c.Name.ToLower() != "cancelled")).ToListAsync();
             return shipments != null ? shipments : throw new ShipmentNotFoundException();
         }
 
         public async Task<IEnumerable<Shipment>> ReadShipmentByCustomer(string userSub)
         {
-            var shipments = await _context.Shipments.Include(x => x.StatusList).Where(x => x.UserSub == userSub).ToListAsync();
+            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(x => x.Destination).Where(x => x.UserSub == userSub).ToListAsync();
             return shipments != null ? shipments : throw new ShipmentNotFoundException();
         }
 
        
         public async Task<Shipment> ReadShipmentByIdAdmin(int id)
         {
-            var shipment = await _context.Shipments.Include(x => x.StatusList).FirstOrDefaultAsync(x => x.Id == id);
+            var shipment = await _context.Shipments.Include(x => x.StatusList).Include(x => x.Destination).FirstOrDefaultAsync(x => x.Id == id);
 
             return shipment != null ? shipment : throw new ShipmentNotFoundException();
         }

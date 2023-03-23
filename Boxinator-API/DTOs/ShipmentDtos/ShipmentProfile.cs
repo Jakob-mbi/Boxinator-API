@@ -6,14 +6,13 @@ namespace Boxinator_API.DTOs.ShipmentDtos
 {
     public class ShipmentProfile : Profile
     {
-        ShipmentProfile()
+        public ShipmentProfile()
         {
             CreateMap<Shipment, GetShipmentDTO>()
-                 .ForMember(dto => dto.Destination, options => options.MapFrom(shipment => shipment.Destination.Name))
-                 .ForMember(dto => dto.registerdSender, options =>
-                options.MapFrom(shipment => shipment.User.Sub))
                  .ForMember(dto => dto.StatusList, options =>
-               options.MapFrom(list => list.StatusList.Select(status => status.Name).ToList()));
+               options.MapFrom(model => model.StatusList.Select(status => status.Name).ToList()))
+                 .ForMember(dto => dto.Destination, options => options.MapFrom(model => model.Destination.Name));
+            CreateMap<PutShipmentDTO, Shipment>();
         }
             
         

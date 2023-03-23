@@ -50,6 +50,13 @@ namespace Boxinator_API.Services.ShipmentDataAccess.Admin
         /// <exception cref="ShipmentNotFoundException">Thrown if Shipment is not found</exception>
         /// <returns></returns>
         public Task<Shipment> UpdateShipmentAdmin(Shipment shipmentObj);
+        /// <summary>
+        /// Find status 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <exception cref="StatusNotFoundException">Thrown if Shipment is not found</exception>
+        /// <returns></returns>
+        public Task<Status> ReadStatusById(int id);
 
         /// <summary>
         /// Deletes Shipment with id

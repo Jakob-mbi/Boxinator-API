@@ -12,11 +12,12 @@ using AutoMapper;
 using Boxinator_API.DTOs.ShipmentDtos;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Authorization;
+using Boxinator_API.DTOs.StatusDtos;
 
 namespace Boxinator_API.Controllers
 {
     [ApiController]
-    [Authorize(Roles = "ADMIN")]
+    //[Authorize(Roles = "ADMIN")]
     [Route("api/v1/[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
@@ -160,7 +161,7 @@ namespace Boxinator_API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> PutCharacter(int id, [FromBody] PutShipmentDTO shipment)
+        public async Task<IActionResult> PutShipment(int id, [FromBody] PutShipmentDTO shipment)
         {
 
             if (id != shipment.Id)
@@ -180,7 +181,59 @@ namespace Boxinator_API.Controllers
                 });
             }
         }
+        /// <summary>
+        /// Update shipment status by id
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut("status/add/{shipmentid}")]
+        public async Task<IActionResult> AddStatusShipment(int shipmentid, [FromBody] StatusDto shipmentStatus)
+        {
+            try
+            {
+                var shippment = await _shipmentContext.ReadShipmentByIdAdmin(shipmentid);
+                shippment.StatusList.Add(await _shipmentContext.ReadStatusById(shipmentStatus.Id));
+                await _shipmentContext.UpdateShipmentAdmin(shippment);
+            }
+            catch (ShipmentNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
+            return NoContent();
+        }
+        /// <summary>
+        /// Update shipment status by id
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut("status/remove/{shipmentid}")]
+        public async Task<IActionResult> RemoveStatusShipment(int shipmentid, [FromBody] StatusDto shipmentStatus)
+        {
+            try
+            {
+                var shippment = await _shipmentContext.ReadShipmentByIdAdmin(shipmentid);
+                var status = shippment.StatusList.FirstOrDefault(x => x.Id == shipmentStatus.Id);
+                shippment.StatusList.Remove(status);
+                await _shipmentContext.UpdateShipmentAdmin(shippment);
+            }
+            catch (ShipmentNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
+            catch(StatusNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
+            return NoContent();
+        }
 
-        
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Boxinator_API.CustomExceptions;
+using Boxinator_API.DTOs.StatusDtos;
 using Boxinator_API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -61,6 +62,13 @@ namespace Boxinator_API.Services.ShipmentDataAccess.Admin
             await _context.SaveChangesAsync();
             return shipmentObj;
         }
+
+        public async Task<Status> ReadStatusById(int id)
+        {
+            var status = await _context.Status.FirstOrDefaultAsync(x => x.Id == id);
+            return status != null ? status : throw new StatusNotFoundException();
+        }
+
 
     }
 }

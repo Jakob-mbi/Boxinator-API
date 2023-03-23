@@ -6,6 +6,6 @@ namespace Boxinator_API.DTOs.StatusDtos
     {
         public int Id { get; set; }
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string StatusName { get; set; }
     }
 }

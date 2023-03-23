@@ -20,12 +20,37 @@ namespace Boxinator_API.Controllers
             _shipmentContext = shipmentContext;
             _mapper = mapper;
         }
-
-        // GET: api/ShipmentAdmin
-        [HttpGet]
+        string sub = "9e305eb4-7639-422d-9432-a3e001c6c5b7";
+        /// <summary>
+        /// List of current shipments
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("current")]
         public async Task<ActionResult<IEnumerable<GetShipmentDTO>>> GetShipments()
         {
-            string subject = "e1c3c5df-7f33-4e8f-9c17-ff04627347ee";
+            string subject = sub;
+            try
+            {
+                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllShipmentsForAuthenticatedUser(subject)));
+            }
+            catch (ShipmentNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
+
+        }
+
+        /// <summary>
+        /// List of cancelled shipments
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("cancelled")]
+        public async Task<ActionResult<IEnumerable<GetShipmentDTO>>> GetCancelledShipments()
+        {
+            string subject = sub;
             try
             {
                 return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllCancelledShipmentsForAuthenticatedUser(subject)));
@@ -38,6 +63,26 @@ namespace Boxinator_API.Controllers
                 });
             }
 
+        }
+        /// <summary>
+        /// List of completed shipments
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("completed")]
+        public async Task<ActionResult<IEnumerable<GetShipmentDTO>>> GetCompletedShipments()
+        {
+            string subject = sub;
+            try
+            {
+                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllCompletedShipmentsForAuthenticatedUser(subject)));
+            }
+            catch (ShipmentNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
         }
     }
 }

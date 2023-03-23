@@ -12,12 +12,13 @@ using Boxinator_API.CustomExceptions;
 using Microsoft.AspNetCore.Cors;
 using System.Net;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Boxinator_API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    //[EnableCors("_myAllowSpecificOrigins")]
+    [EnableCors("_myAllowSpecificOrigins")]
     public class CountriesController : ControllerBase
     {
         private readonly ICountryService _countryService;
@@ -85,6 +86,7 @@ namespace Boxinator_API.Controllers
         /// <returns></returns>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutCountry(int id, [FromBody] PutCountryDTO country)
         {
             if (id != country.Id)
@@ -124,7 +126,7 @@ namespace Boxinator_API.Controllers
                 });
             }
 
-            return NoContent();
+            return Ok();
         }
 
         ///// <summary>

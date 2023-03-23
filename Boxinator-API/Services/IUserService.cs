@@ -5,11 +5,11 @@ namespace Boxinator_API.Services
 {
     public interface IUserService
     {
-        Task<ActionResult<User>> AddUser(User user);
+        Task<ActionResult<User>> AddUser(string sub, User user, int roleId, string email);
         Task DeleteUser(int id);
         Task<IEnumerable<User>> GetAllUsers();
-        Task<User> GetUserById(int id);
+      //  Task<User> GetUserById(int id);
         Task<User> GetUserBySub(string sub);
-        Task<User> UpdateUser(User user);
+        Task<User> UpdateUser(User user, string sub);
     }
 }

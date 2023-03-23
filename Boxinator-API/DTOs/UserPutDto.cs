@@ -4,8 +4,6 @@ namespace Boxinator_API.DTOs
 {
     public class UserPutDto
     {
-        [Required]
-        public string Sub { get; set; }
         public string? DateOfBirth { get; set; }
         [MaxLength(100)]
         public string? ZipCode { get; set; }

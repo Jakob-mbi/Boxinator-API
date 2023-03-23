@@ -2,6 +2,7 @@
 using Boxinator_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 
 namespace Boxinator_API.Services
 {
@@ -14,15 +15,46 @@ namespace Boxinator_API.Services
             _context = context;
         }
 
-        public async Task<ActionResult<User>> AddUser(User user)
+        public async Task<ActionResult<User>> AddUser(string sub, User user, int roleId, string email)
         {
+           
+
             var existingUser = await _context.Users
-                .SingleOrDefaultAsync(u => u.Sub == user.Sub);
+                .SingleOrDefaultAsync(u => u.Sub == sub);
+          
             if (existingUser == null)
             {
+                user.Sub = sub;
+                user.DateOfBirth= null;
+                user.ZipCode= null;
+                user.Country = null;
+                user.ContactNumber = null;
+                user.RoleId = roleId;
+              
                 await _context.Users.AddAsync(user);
-                await _context.SaveChangesAsync();
             }
+            var existingShipments = await _context.Shipments
+          .Where(s => s.Email == email)
+          .ToListAsync();
+
+            if (existingShipments.Any())
+            {
+                // Add the shipments to the user's shipmentList
+                if (user.ShipmentsList == null)
+                {
+                    user.ShipmentsList = new List<Shipment>();
+                }
+
+                user.ShipmentsList.AddRange(existingShipments);
+            }
+
+            foreach (var shipment in existingShipments)
+            {
+                Console.WriteLine(shipment);
+            }
+
+            await _context.SaveChangesAsync();
+
 
             return user;
         }
@@ -32,7 +64,7 @@ namespace Boxinator_API.Services
             var user = await _context.Users.FindAsync(id);  
             if (user == null)
             {
-                throw new UserNotFoundException(id);
+                //throw new UserNotFoundException(id);
             }
 
             _context.Users.Remove(user);
@@ -45,10 +77,10 @@ namespace Boxinator_API.Services
             return await _context.Users.Include(x => x.ShipmentsList).ToListAsync();
         }
 
-        public Task<User> GetUserById(int id)
+       /* public Task<User> GetUserById(int id)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         /*public async Task<User> GetUserById(int id)
         {
@@ -60,6 +92,8 @@ namespace Boxinator_API.Services
             return user;
         }
 */
+
+      
         public async Task<User> GetUserBySub(string sub)
         {
             var user = await _context.Users.Include(x => x.ShipmentsList).FirstOrDefaultAsync(x => x.Sub == sub);
@@ -71,18 +105,14 @@ namespace Boxinator_API.Services
             return user;
         }
 
-        public Task<User> UpdateUser(User user)
-        {
-            throw new NotImplementedException();
-        }
 
-        /*public async Task<User> UpdateUser(User user)
+        public async Task<User> UpdateUser(User user, string sub)
         {
             var existingUser = await _context.Users
-                .SingleOrDefaultAsync(u => u.Sub == user.Sub);
+                .SingleOrDefaultAsync(u => u.Sub == sub);
             if (existingUser is null)
             {
-                throw new UserNotFoundException(user.Id);
+                throw new UserNotFoundException(user.Sub);
             }
             existingUser.DateOfBirth = user.DateOfBirth;
             existingUser.Country = user.Country;
@@ -92,6 +122,6 @@ namespace Boxinator_API.Services
             await _context.SaveChangesAsync();
 
             return existingUser;
-        }*/
+        }
     }
 }

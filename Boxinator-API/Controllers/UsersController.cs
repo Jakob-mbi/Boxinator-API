@@ -18,6 +18,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Newtonsoft.Json;
 using Boxinator_API.ExtractToken;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Boxinator_API.Controllers
 {
@@ -44,6 +45,13 @@ namespace Boxinator_API.Controllers
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
             var subject = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var role = User.FindFirstValue(ClaimTypes.Role);
+
+            foreach (var claim in User.Claims)
+            {
+                Console.WriteLine($"{claim.Type} = {claim.Value}");
+            }
+
             if (subject != null)
             {
                 return Ok($"this is sub : {subject}");
@@ -60,12 +68,12 @@ namespace Boxinator_API.Controllers
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserDto>> GetUser(int id)
+        [HttpGet("{sub}")]
+        public async Task<ActionResult<UserDto>> GetUser(string sub)
         {
             try
             {
-                return Ok(_mapper.Map<UserDto>(await _userService.GetUserById(id)));
+                return Ok(_mapper.Map<UserDto>(await _userService.GetUserBySub(sub)));
             }
             catch (UserNotFoundException ex)
             {
@@ -77,6 +85,7 @@ namespace Boxinator_API.Controllers
             }
         }
 
+        // This endpoint is used to update user information in Account page
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut()]
@@ -84,30 +93,10 @@ namespace Boxinator_API.Controllers
         public async Task<IActionResult> PutUser(UserPutDto userPutDto)
         {
             var subject = User.FindFirstValue(ClaimTypes.NameIdentifier);
-             if (subject != null)
-            {
-                return Ok($"this is sub : {subject}");
-            }
-           /* return BadRequest("No sub found");*/
 
-            var subClaim = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase));
-            if (subClaim != null)
-            {
-                return Ok($"this is sub : {subClaim}");
-            }
-            return BadRequest("No sub found");
-            /*if (!Request.Headers.TryGetValue("Authorization", out var token))
-            {
-                return Unauthorized();
-            }
-            GetSubClaimFromToken tokenExtractor = new GetSubClaimFromToken();
-            var subClaim = await tokenExtractor.ExtractTokenUserSub(token , _configuration);
+            var user = _mapper.Map<User>(userPutDto);
 
-              if (subClaim != null)
-            {
-                return Ok($"this is sub : {subClaim}");
-            }
-            return BadRequest("No sub found");*/
+            await _userService.UpdateUser(user, subject);
 
 
             return NoContent();
@@ -115,12 +104,20 @@ namespace Boxinator_API.Controllers
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<UserDto>> PostUser(UserCreateDto userCreateDto )
+        [HttpPost("{roleId}")]
+        public async Task<ActionResult<UserDto>> PostUser(int roleId)
         {
+            var subject = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var email = User.FindFirstValue(ClaimTypes.Email);
+        
+            Console.WriteLine(subject + " : " + roleId);
+            UserCreateDto userCreateDto = new UserCreateDto();
+           
             var user = _mapper.Map<User>(userCreateDto);
-            await _userService.AddUser(user);
+
+            await _userService.AddUser(subject, user, roleId, email);
             return CreatedAtAction(nameof(GetUser), new { id = user.Sub }, user);
+
         }
 
         // DELETE: api/Users/5
@@ -162,14 +159,6 @@ namespace Boxinator_API.Controllers
         }*/
 
 
-        /*var subClaim = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase));
-           //var subClaim = HttpContext.User.FindFirstValue("sub");
-
-           if (subClaim != null)
-           {
-               return Ok($"this is sub : {subClaim.Value}");
-           }
-           return BadRequest("No sub founded");*/
 
         /*
                 [HttpGet("usersSub")]
@@ -214,72 +203,16 @@ namespace Boxinator_API.Controllers
                 }
         */
 
-
+        // This end point is used to retrieve user information into Account page
         [HttpGet("usersSub")]
         public async Task<ActionResult<UserDto>> GetUserSub()
         {
 
             var subject = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (subject != null)
-            {
-                return Ok($"this is sub : {subject}");
-            }
-            /* return BadRequest("No sub found");*/
-
-            var subClaim = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase));
-            if (subClaim != null)
-            {
-                return Ok($"this is sub : {subClaim}");
-            }
-            return BadRequest("No sub found");
-            /*if (!Request.Headers.TryGetValue("Authorization", out var token))
-            {
-                return Unauthorized();
-            }
-
-            // Extract the JWT token from the Authorization header
-            var jwtToken = token.ToString().Substring("Bearer ".Length).Trim();
-
-            // Retrieve the JsonWebKeySet from Keycloak instance
-            var client = new HttpClient();
-            var keyUri = _configuration["JWT:key-uri"];      
-            var response = await client.GetAsync(keyUri);
-            var responseString = await response.Content.ReadAsStringAsync();
-            var keys = JsonConvert.DeserializeObject<JsonWebKeySet>(responseString);
-
-            // Get the kid claim from the JWT token's header
-            var handler = new JwtSecurityTokenHandler();
-            var jwtHeader = handler.ReadJwtToken(jwtToken).Header;
-            var kid = jwtHeader.Kid;
-
-            // Find the appropriate key from the JsonWebKeySet based on the kid claim
-            var key = keys.Keys.FirstOrDefault(k => k.Kid == kid);
-
-            if (key == null)
-            {
-                return BadRequest("Invalid JWT token");
-            }
-
-            var validationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = key,
-                ValidateIssuer = true,
-                ValidIssuer = _configuration["JWT:issuer"],
-                ValidateAudience = true,
-                ValidAudience = _configuration["JWT:audience"]
-            };
-
-            SecurityToken validatedToken;
-            *//*handler = new JwtSecurityTokenHandler();*//*
-            var claimsPrincipal = handler.ValidateToken(jwtToken, validationParameters, out validatedToken);
-
-            // Get the sub claim from the JWT token
-            var subClaim = claimsPrincipal.FindFirst("sub")?.Value;
 
             try
             {
-                return Ok(_mapper.Map<UserDto>(await _userService.GetUserBySub(subClaim)));
+                return Ok(_mapper.Map<UserDto>(await _userService.GetUserBySub(subject)));
             }
             catch (UserNotFoundException ex)
             {
@@ -288,7 +221,7 @@ namespace Boxinator_API.Controllers
                     Detail = ex.Message,
                     Status = (int)HttpStatusCode.NotFound
                 });
-            }*/
+            }
         }
 
 

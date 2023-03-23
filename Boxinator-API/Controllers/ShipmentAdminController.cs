@@ -186,15 +186,24 @@ namespace Boxinator_API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("status/add/{shipmentid}")]
-        public async Task<IActionResult> AddStatusShipment(int shipmentid, [FromBody] StatusDto shipmentStatus)
+        public async Task<IActionResult> AddStatusToShipment(int shipmentid, [FromBody] StatusDto shipmentStatus)
         {
             try
             {
                 var shippment = await _shipmentContext.ReadShipmentByIdAdmin(shipmentid);
-                shippment.StatusList.Add(await _shipmentContext.ReadStatusById(shipmentStatus.Id));
+                var status = await _shipmentContext.ReadStatusById(shipmentStatus.Id);
+                if(shippment.StatusList.Any(x => x.Id == status.Id)) { throw new StatusAlredyExist(); }
+                shippment.StatusList.Add(status);
                 await _shipmentContext.UpdateShipmentAdmin(shippment);
             }
             catch (ShipmentNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
+            catch(StatusAlredyExist ex) 
             {
                 return NotFound(new ProblemDetails
                 {
@@ -208,7 +217,7 @@ namespace Boxinator_API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("status/remove/{shipmentid}")]
-        public async Task<IActionResult> RemoveStatusShipment(int shipmentid, [FromBody] StatusDto shipmentStatus)
+        public async Task<IActionResult> RemoveStatusToShipment(int shipmentid, [FromBody] StatusDto shipmentStatus)
         {
             try
             {

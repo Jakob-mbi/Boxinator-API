@@ -55,15 +55,6 @@ namespace Boxinator_API.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Roles",
-                columns: new[] { "Id", "Role" },
-                values: new object[,]
-                {
-                    { 1, "ADMINISTRATOR" },
-                    { 2, "REGISTERED_USER" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Status",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -77,14 +68,14 @@ namespace Boxinator_API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Sub", "ContactNumber", "Country", "DateOfBirth", "RoleId", "ZipCode" },
+                columns: new[] { "Sub", "ContactNumber", "Country", "DateOfBirth", "ZipCode" },
                 values: new object[,]
                 {
-                    { "44feb5ab-e680-4979-95f6-9cbc18d32077", null, null, null, 1, null },
-                    { "9e305eb4-7639-422d-9432-a3e001c6c5b7", null, null, null, 2, null },
-                    { "bcc36e9d-c309-4248-b777-0421c370eaba", null, null, null, 2, null },
-                    { "c7643ce3-acaa-470e-8f11-a634dccad52a", null, null, null, 2, null },
-                    { "e7359cd5-6dec-4f8b-be74-0e3148eaa51f", null, null, null, 2, null }
+                    { "44feb5ab-e680-4979-95f6-9cbc18d32077", null, null, null, null },
+                    { "9e305eb4-7639-422d-9432-a3e001c6c5b7", null, null, null, null },
+                    { "bcc36e9d-c309-4248-b777-0421c370eaba", null, null, null, null },
+                    { "c7643ce3-acaa-470e-8f11-a634dccad52a", null, null, null, null },
+                    { "e7359cd5-6dec-4f8b-be74-0e3148eaa51f", null, null, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -379,16 +370,6 @@ namespace Boxinator_API.Migrations
                 table: "Users",
                 keyColumn: "Sub",
                 keyValue: "c7643ce3-acaa-470e-8f11-a634dccad52a");
-
-            migrationBuilder.DeleteData(
-                table: "Roles",
-                keyColumn: "Id",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "Roles",
-                keyColumn: "Id",
-                keyValue: 2);
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ShipmentStatus",

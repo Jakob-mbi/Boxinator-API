@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Boxinator_API.Migrations
 {
     [DbContext(typeof(BoxinatorDbContext))]
-    [Migration("20230320130106_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230324155340_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,6 @@ namespace Boxinator_API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Multiplier")
-                        .HasMaxLength(100)
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -44,24 +43,6 @@ namespace Boxinator_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
-                });
-
-            modelBuilder.Entity("Boxinator_API.Models.Roles", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Boxinator_API.Models.Shipment", b =>
@@ -93,7 +74,6 @@ namespace Boxinator_API.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserSub")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Weight")
@@ -142,16 +122,11 @@ namespace Boxinator_API.Migrations
                     b.Property<string>("DateOfBirth")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ZipCode")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Sub");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -174,31 +149,18 @@ namespace Boxinator_API.Migrations
             modelBuilder.Entity("Boxinator_API.Models.Shipment", b =>
                 {
                     b.HasOne("Boxinator_API.Models.Country", "Destination")
-                        .WithMany("ShipmentsList")
+                        .WithMany("ShipmentList")
                         .HasForeignKey("DestinationID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Boxinator_API.Models.User", "User")
                         .WithMany("ShipmentsList")
-                        .HasForeignKey("UserSub")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserSub");
 
                     b.Navigation("Destination");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Boxinator_API.Models.User", b =>
-                {
-                    b.HasOne("Boxinator_API.Models.Roles", "Role")
-                        .WithMany("UsersList")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("ShipmentStatus", b =>
@@ -218,12 +180,7 @@ namespace Boxinator_API.Migrations
 
             modelBuilder.Entity("Boxinator_API.Models.Country", b =>
                 {
-                    b.Navigation("ShipmentsList");
-                });
-
-            modelBuilder.Entity("Boxinator_API.Models.Roles", b =>
-                {
-                    b.Navigation("UsersList");
+                    b.Navigation("ShipmentList");
                 });
 
             modelBuilder.Entity("Boxinator_API.Models.User", b =>

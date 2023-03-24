@@ -23,7 +23,6 @@ namespace Boxinator_API.Models
        
         [MaxLength(100)]
         public User? User { get; set; }
-        [Required]
         public string? UserSub { get; set; }
         [Required]
         [Range(typeof(decimal), "0", "1000")]

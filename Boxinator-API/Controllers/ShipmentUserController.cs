@@ -27,8 +27,6 @@ namespace Boxinator_API.Controllers
         {
             _shipmentContext = shipmentContext;
             _mapper = mapper;
-            
-            //_sub = /*sub != null ? sub : */"9e305eb4-7639-422d-9432-a3e001c6c5b7";
         }
         /// <summary>
         /// List of current shipments
@@ -41,8 +39,8 @@ namespace Boxinator_API.Controllers
             
             try
             {
-                var _sub = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).Value.ToString();
-                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllShipmentsForAuthenticatedUser(_sub)));
+                var sub = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllShipmentsForAuthenticatedUser(sub)));
             }
             catch (ShipmentNotFoundException ex)
             {
@@ -65,8 +63,8 @@ namespace Boxinator_API.Controllers
             
             try
             {
-                var _sub = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).Value.ToString();
-                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllCancelledShipmentsForAuthenticatedUser(_sub)));
+                var sub = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllCancelledShipmentsForAuthenticatedUser(sub)));
             }
             catch (ShipmentNotFoundException ex)
             {
@@ -88,8 +86,8 @@ namespace Boxinator_API.Controllers
             
             try
             {
-                var _sub = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).Value.ToString();
-                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllCompletedShipmentsForAuthenticatedUser(_sub)));
+                var sub = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllCompletedShipmentsForAuthenticatedUser(sub)));
             }
             catch (ShipmentNotFoundException ex)
             {
@@ -110,8 +108,8 @@ namespace Boxinator_API.Controllers
         {
             try
             {
-                var _sub = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).Value.ToString();
-                return Ok(_mapper.Map<GetShipmentDTO>(await _shipmentContext.ReadShipmentById(id, _sub)));
+                var sub = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                return Ok(_mapper.Map<GetShipmentDTO>(await _shipmentContext.ReadShipmentById(id, sub)));
             }
             catch (ShipmentNotFoundException ex)
             {
@@ -132,10 +130,9 @@ namespace Boxinator_API.Controllers
         {
             try
             {
-                var _sub = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).Value.ToString();
+                var sub = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
                 var shipment = _mapper.Map<Shipment>(newShipment);
-                shipment.UserSub = _sub;
-                //shipment.Destination = await _shipmentContext.FindDestinationById(newShipment.DestinationID);
+                shipment.UserSub = sub;
                 await _shipmentContext.CreateNewShipment(shipment);
 
                 return CreatedAtAction(nameof(GetShipmentbyId), new { id = shipment.Id }, shipment);
@@ -172,8 +169,8 @@ namespace Boxinator_API.Controllers
         {
             try
             {
-                var _sub = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", StringComparison.InvariantCultureIgnoreCase)).Value.ToString();
-                var shippment = await _shipmentContext.ReadShipmentById(shipmentid,_sub);
+                var sub = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var shippment = await _shipmentContext.ReadShipmentById(shipmentid,sub);
                 var status = await _shipmentContext.ReadStatusById(5);
                 if (shippment.StatusList.Any(x => x.Id == status.Id)) { throw new StatusAlredyExist(); }
                 shippment.StatusList.Add(status);

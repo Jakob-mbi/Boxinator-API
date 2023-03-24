@@ -29,7 +29,6 @@ namespace Boxinator_API.Services
                 user.ZipCode= null;
                 user.Country = null;
                 user.ContactNumber = null;
-                user.RoleId = roleId;
               
                 await _context.Users.AddAsync(user);
             }

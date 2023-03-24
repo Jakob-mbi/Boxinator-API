@@ -5,7 +5,7 @@
 namespace Boxinator_API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class initialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,24 +17,11 @@ namespace Boxinator_API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Multiplier = table.Column<int>(type: "int", maxLength: 100, nullable: false)
+                    Multiplier = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Role = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -55,21 +42,14 @@ namespace Boxinator_API.Migrations
                 columns: table => new
                 {
                     Sub = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DateOfBirth = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DateOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ZipCode = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    ContactNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    ContactNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Sub);
-                    table.ForeignKey(
-                        name: "FK_Users_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,13 +74,12 @@ namespace Boxinator_API.Migrations
                         column: x => x.DestinationID,
                         principalTable: "Countries",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Shipments_Users_UserSub",
                         column: x => x.UserSub,
                         principalTable: "Users",
-                        principalColumn: "Sub",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "Sub");
                 });
 
             migrationBuilder.CreateTable(
@@ -141,11 +120,6 @@ namespace Boxinator_API.Migrations
                 name: "IX_ShipmentStatus_StatusListId",
                 table: "ShipmentStatus",
                 column: "StatusListId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_RoleId",
-                table: "Users",
-                column: "RoleId");
         }
 
         /// <inheritdoc />
@@ -165,9 +139,6 @@ namespace Boxinator_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
         }
     }
 }

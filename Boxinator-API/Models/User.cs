@@ -14,11 +14,6 @@ namespace Boxinator_API.Models
         public string? Country { get; set; }
         [MaxLength(100)]
         public string? ContactNumber { get; set; }
-        public int RoleId { get; set; }
-        [Required]
-        [MaxLength(100)]
-        public Roles Role { get; set; }
-        
         public ICollection<Shipment>? ShipmentsList { get; set; }
     }
 }

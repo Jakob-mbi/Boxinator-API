@@ -30,7 +30,6 @@ namespace Boxinator_API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Multiplier")
-                        .HasMaxLength(100)
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -177,36 +176,6 @@ namespace Boxinator_API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Boxinator_API.Models.Roles", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Role = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Role = "REGISTERED_USER"
-                        });
-                });
-
             modelBuilder.Entity("Boxinator_API.Models.Shipment", b =>
                 {
                     b.Property<int>("Id")
@@ -236,7 +205,6 @@ namespace Boxinator_API.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserSub")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Weight")
@@ -394,44 +362,34 @@ namespace Boxinator_API.Migrations
                     b.Property<string>("DateOfBirth")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ZipCode")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Sub");
 
-                    b.HasIndex("RoleId");
-
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Sub = "44feb5ab-e680-4979-95f6-9cbc18d32077",
-                            RoleId = 1
+                            Sub = "44feb5ab-e680-4979-95f6-9cbc18d32077"
                         },
                         new
                         {
-                            Sub = "c7643ce3-acaa-470e-8f11-a634dccad52a",
-                            RoleId = 2
+                            Sub = "c7643ce3-acaa-470e-8f11-a634dccad52a"
                         },
                         new
                         {
-                            Sub = "e7359cd5-6dec-4f8b-be74-0e3148eaa51f",
-                            RoleId = 2
+                            Sub = "e7359cd5-6dec-4f8b-be74-0e3148eaa51f"
                         },
                         new
                         {
-                            Sub = "bcc36e9d-c309-4248-b777-0421c370eaba",
-                            RoleId = 2
+                            Sub = "bcc36e9d-c309-4248-b777-0421c370eaba"
                         },
                         new
                         {
-                            Sub = "9e305eb4-7639-422d-9432-a3e001c6c5b7",
-                            RoleId = 2
+                            Sub = "9e305eb4-7639-422d-9432-a3e001c6c5b7"
                         });
                 });
 
@@ -500,31 +458,18 @@ namespace Boxinator_API.Migrations
             modelBuilder.Entity("Boxinator_API.Models.Shipment", b =>
                 {
                     b.HasOne("Boxinator_API.Models.Country", "Destination")
-                        .WithMany("ShipmentsList")
+                        .WithMany("ShipmentList")
                         .HasForeignKey("DestinationID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Boxinator_API.Models.User", "User")
                         .WithMany("ShipmentsList")
-                        .HasForeignKey("UserSub")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserSub");
 
                     b.Navigation("Destination");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Boxinator_API.Models.User", b =>
-                {
-                    b.HasOne("Boxinator_API.Models.Roles", "Role")
-                        .WithMany("UsersList")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("ShipmentStatus", b =>
@@ -544,12 +489,7 @@ namespace Boxinator_API.Migrations
 
             modelBuilder.Entity("Boxinator_API.Models.Country", b =>
                 {
-                    b.Navigation("ShipmentsList");
-                });
-
-            modelBuilder.Entity("Boxinator_API.Models.Roles", b =>
-                {
-                    b.Navigation("UsersList");
+                    b.Navigation("ShipmentList");
                 });
 
             modelBuilder.Entity("Boxinator_API.Models.User", b =>

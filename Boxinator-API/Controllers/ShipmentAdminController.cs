@@ -18,7 +18,7 @@ namespace Boxinator_API.Controllers
 {
     [ApiController]
     //[Authorize(Roles = "ADMIN")]
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/admin/shipment")]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiConventionType(typeof(DefaultApiConventions))]
@@ -171,7 +171,7 @@ namespace Boxinator_API.Controllers
             try
             {
                 var obj = _mapper.Map<Shipment>(shipment);
-                return Ok(await _shipmentContext.UpdateShipmentAdmin(obj));
+                return Ok(await _shipmentContext.UpdateShipment(obj));
             }
             catch (ShipmentNotFoundException ex)
             {
@@ -194,7 +194,7 @@ namespace Boxinator_API.Controllers
                 var status = await _shipmentContext.ReadStatusById(shipmentStatus.Id);
                 if(shippment.StatusList.Any(x => x.Id == status.Id)) { throw new StatusAlredyExist(); }
                 shippment.StatusList.Add(status);
-                await _shipmentContext.UpdateShipmentAdmin(shippment);
+                await _shipmentContext.UpdateShipment(shippment);
             }
             catch (ShipmentNotFoundException ex)
             {
@@ -224,7 +224,7 @@ namespace Boxinator_API.Controllers
                 var shippment = await _shipmentContext.ReadShipmentByIdAdmin(shipmentid);
                 var status = shippment.StatusList.FirstOrDefault(x => x.Id == shipmentStatus.Id);
                 shippment.StatusList.Remove(status);
-                await _shipmentContext.UpdateShipmentAdmin(shippment);
+                await _shipmentContext.UpdateShipment(shippment);
             }
             catch (ShipmentNotFoundException ex)
             {

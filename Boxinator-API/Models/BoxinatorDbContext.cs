@@ -51,17 +51,17 @@ namespace Boxinator_API.Models
             new Status { Id = 4, Name = "COMPLETED" },
             new Status { Id = 5, Name = "CANCELLED" }
             ); modelBuilder.Entity<User>().HasData(
-            new User { Sub = "e1c3c5df-7f33-4e8f-9c17-ff04627347ee",RoleId = 1,},
+            new User { Sub = "44feb5ab-e680-4979-95f6-9cbc18d32077", RoleId = 1,},
             new User { Sub = "c7643ce3-acaa-470e-8f11-a634dccad52a", RoleId = 2 },
             new User { Sub = "e7359cd5-6dec-4f8b-be74-0e3148eaa51f", RoleId = 2 },
             new User { Sub = "bcc36e9d-c309-4248-b777-0421c370eaba", RoleId = 2 },
             new User { Sub = "9e305eb4-7639-422d-9432-a3e001c6c5b7",RoleId = 2 }
             );
             modelBuilder.Entity<Shipment>().HasData(
-            new Shipment { Id= 1, ReciverName= "John Smith", Weight= 50, BoxColor= "Red", DestinationID= 1, UserSub= "e1c3c5df-7f33-4e8f-9c17-ff04627347ee", Price= 200 },
-            new Shipment { Id = 2, ReciverName = "Alice Johnson", Weight = 60, BoxColor = "Blue", DestinationID = 14, UserSub = "e7359cd5-6dec-4f8b-be74-0e3148eaa51f", Price = 400 },
-            new Shipment { Id = 3, ReciverName = "Bob Thompson", Weight = 70, BoxColor = "Green", DestinationID = 10, UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a", Price = 300 },
-            new Shipment { Id = 4, ReciverName = "John Smith", Weight = 50, BoxColor = "Yellow", DestinationID = 3, UserSub = "e1c3c5df-7f33-4e8f-9c17-ff04627347ee", Price = 200 },
+            new Shipment { Id= 1, ReciverName= "John Smith", Weight= 50, BoxColor= "Red", DestinationID= 1, UserSub= "44feb5ab-e680-4979-95f6-9cbc18d32077", Price= 200 },
+            new Shipment { Id = 2, ReciverName = "Alice Johnson", Weight = 60, BoxColor = "Blue", DestinationID = 14, UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077", Price = 400 },
+            new Shipment { Id = 3, ReciverName = "Bob Thompson", Weight = 70, BoxColor = "Green", DestinationID = 10, UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077", Price = 300 },
+            new Shipment { Id = 4, ReciverName = "John Smith", Weight = 50, BoxColor = "Yellow", DestinationID = 3, UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077", Price = 200 },
             new Shipment { Id = 5, ReciverName = "Emily Davis", Weight = 20, BoxColor = "Purple", DestinationID = 8, UserSub = "9e305eb4-7639-422d-9432-a3e001c6c5b7", Price = 400 },
             new Shipment { Id = 6, ReciverName = "Bob Thompson", Weight = 30, BoxColor = "Orange", DestinationID = 17, UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a", Price = 300 },
              new Shipment { Id = 7, ReciverName = "Emily Davis", Weight = 60, BoxColor = "Pink", DestinationID = 8, UserSub = "9e305eb4-7639-422d-9432-a3e001c6c5b7", Price = 400 },

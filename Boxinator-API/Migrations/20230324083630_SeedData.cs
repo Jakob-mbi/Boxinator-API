@@ -80,10 +80,10 @@ namespace Boxinator_API.Migrations
                 columns: new[] { "Sub", "ContactNumber", "Country", "DateOfBirth", "RoleId", "ZipCode" },
                 values: new object[,]
                 {
+                    { "44feb5ab-e680-4979-95f6-9cbc18d32077", null, null, null, 1, null },
                     { "9e305eb4-7639-422d-9432-a3e001c6c5b7", null, null, null, 2, null },
                     { "bcc36e9d-c309-4248-b777-0421c370eaba", null, null, null, 2, null },
                     { "c7643ce3-acaa-470e-8f11-a634dccad52a", null, null, null, 2, null },
-                    { "e1c3c5df-7f33-4e8f-9c17-ff04627347ee", null, null, null, 1, null },
                     { "e7359cd5-6dec-4f8b-be74-0e3148eaa51f", null, null, null, 2, null }
                 });
 
@@ -92,12 +92,14 @@ namespace Boxinator_API.Migrations
                 columns: new[] { "Id", "BoxColor", "DestinationID", "Email", "Price", "ReciverName", "UserSub", "Weight" },
                 values: new object[,]
                 {
-                    { 1, "Red", 1, null, 200m, "John Smith", "e1c3c5df-7f33-4e8f-9c17-ff04627347ee", 50 },
-                    { 2, "Blue", 14, null, 400m, "Alice Johnson", "e7359cd5-6dec-4f8b-be74-0e3148eaa51f", 60 },
-                    { 3, "Green", 10, null, 300m, "Bob Thompson", "c7643ce3-acaa-470e-8f11-a634dccad52a", 70 },
-                    { 4, "Yellow", 3, null, 200m, "John Smith", "e1c3c5df-7f33-4e8f-9c17-ff04627347ee", 50 },
+                    { 1, "Red", 1, null, 200m, "John Smith", "44feb5ab-e680-4979-95f6-9cbc18d32077", 50 },
+                    { 2, "Blue", 14, null, 400m, "Alice Johnson", "44feb5ab-e680-4979-95f6-9cbc18d32077", 60 },
+                    { 3, "Green", 10, null, 300m, "Bob Thompson", "44feb5ab-e680-4979-95f6-9cbc18d32077", 70 },
+                    { 4, "Yellow", 3, null, 200m, "John Smith", "44feb5ab-e680-4979-95f6-9cbc18d32077", 50 },
                     { 5, "Purple", 8, null, 400m, "Emily Davis", "9e305eb4-7639-422d-9432-a3e001c6c5b7", 20 },
-                    { 6, "Orange", 17, null, 300m, "Bob Thompson", "c7643ce3-acaa-470e-8f11-a634dccad52a", 30 }
+                    { 6, "Orange", 17, null, 300m, "Bob Thompson", "c7643ce3-acaa-470e-8f11-a634dccad52a", 30 },
+                    { 7, "Pink", 8, null, 400m, "Emily Davis", "9e305eb4-7639-422d-9432-a3e001c6c5b7", 60 },
+                    { 8, "Orange", 17, null, 300m, "Bob Davis", "c7643ce3-acaa-470e-8f11-a634dccad52a", 10 }
                 });
 
             migrationBuilder.InsertData(
@@ -111,7 +113,9 @@ namespace Boxinator_API.Migrations
                     { 4, 1 },
                     { 5, 1 },
                     { 6, 1 },
-                    { 1, 3 }
+                    { 1, 3 },
+                    { 7, 4 },
+                    { 8, 5 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -247,24 +251,29 @@ namespace Boxinator_API.Migrations
                 keyValues: new object[] { 1, 3 });
 
             migrationBuilder.DeleteData(
+                table: "ShipmentStatus",
+                keyColumns: new[] { "ShipmentsListId", "StatusListId" },
+                keyValues: new object[] { 7, 4 });
+
+            migrationBuilder.DeleteData(
+                table: "ShipmentStatus",
+                keyColumns: new[] { "ShipmentsListId", "StatusListId" },
+                keyValues: new object[] { 8, 5 });
+
+            migrationBuilder.DeleteData(
                 table: "Status",
                 keyColumn: "Id",
                 keyValue: 2);
 
             migrationBuilder.DeleteData(
-                table: "Status",
-                keyColumn: "Id",
-                keyValue: 4);
-
-            migrationBuilder.DeleteData(
-                table: "Status",
-                keyColumn: "Id",
-                keyValue: 5);
+                table: "Users",
+                keyColumn: "Sub",
+                keyValue: "bcc36e9d-c309-4248-b777-0421c370eaba");
 
             migrationBuilder.DeleteData(
                 table: "Users",
                 keyColumn: "Sub",
-                keyValue: "bcc36e9d-c309-4248-b777-0421c370eaba");
+                keyValue: "e7359cd5-6dec-4f8b-be74-0e3148eaa51f");
 
             migrationBuilder.DeleteData(
                 table: "Shipments",
@@ -297,6 +306,16 @@ namespace Boxinator_API.Migrations
                 keyValue: 6);
 
             migrationBuilder.DeleteData(
+                table: "Shipments",
+                keyColumn: "Id",
+                keyValue: 7);
+
+            migrationBuilder.DeleteData(
+                table: "Shipments",
+                keyColumn: "Id",
+                keyValue: 8);
+
+            migrationBuilder.DeleteData(
                 table: "Status",
                 keyColumn: "Id",
                 keyValue: 1);
@@ -305,6 +324,16 @@ namespace Boxinator_API.Migrations
                 table: "Status",
                 keyColumn: "Id",
                 keyValue: 3);
+
+            migrationBuilder.DeleteData(
+                table: "Status",
+                keyColumn: "Id",
+                keyValue: 4);
+
+            migrationBuilder.DeleteData(
+                table: "Status",
+                keyColumn: "Id",
+                keyValue: 5);
 
             migrationBuilder.DeleteData(
                 table: "Countries",
@@ -339,22 +368,17 @@ namespace Boxinator_API.Migrations
             migrationBuilder.DeleteData(
                 table: "Users",
                 keyColumn: "Sub",
+                keyValue: "44feb5ab-e680-4979-95f6-9cbc18d32077");
+
+            migrationBuilder.DeleteData(
+                table: "Users",
+                keyColumn: "Sub",
                 keyValue: "9e305eb4-7639-422d-9432-a3e001c6c5b7");
 
             migrationBuilder.DeleteData(
                 table: "Users",
                 keyColumn: "Sub",
                 keyValue: "c7643ce3-acaa-470e-8f11-a634dccad52a");
-
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Sub",
-                keyValue: "e1c3c5df-7f33-4e8f-9c17-ff04627347ee");
-
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Sub",
-                keyValue: "e7359cd5-6dec-4f8b-be74-0e3148eaa51f");
 
             migrationBuilder.DeleteData(
                 table: "Roles",

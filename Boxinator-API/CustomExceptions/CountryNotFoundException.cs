@@ -4,6 +4,7 @@
     {
         public CountryNotFoundException(int id) : base($"Country with id {id} not found")
         {
+
         }
     }
 }

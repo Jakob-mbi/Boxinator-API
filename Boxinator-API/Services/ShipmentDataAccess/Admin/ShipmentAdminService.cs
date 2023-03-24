@@ -51,7 +51,7 @@ namespace Boxinator_API.Services.ShipmentDataAccess.Admin
             return shipment != null ? shipment : throw new ShipmentNotFoundException();
         }
 
-        public async Task<Shipment> UpdateShipmentAdmin(Shipment shipmentObj)
+        public async Task<Shipment> UpdateShipment(Shipment shipmentObj)
         {
             var shipment = await _context.Shipments.AnyAsync(x => x.Id == shipmentObj.Id);
             if (!shipment)

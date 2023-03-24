@@ -14,22 +14,14 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
             _context = context;
         }
 
-        public async Task<Shipment> CancelShipment(int shipmentId, string userSub)
+        public async Task<Country> FindDestinationById(int id)
         {
-            var shipment = await _context.Shipments.Where(u => u.UserSub == userSub).FirstOrDefaultAsync(x => x.Id == shipmentId);
-            if (shipment == null)
-            {
-                throw new ShipmentNotFoundException();
-            }
-            var status = _context.Status.Where(s => s.Name.ToLower() == "canceled").FirstOrDefault();
-            shipment.StatusList.Add(status);
-            status.ShipmentsList.Add(shipment);
-            await _context.SaveChangesAsync();
-            return shipment;
+            var country = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
+            return country != null ? country : throw new CountryNotFoundException();
         }
-
         public async Task<Shipment> CreateNewShipment(Shipment obj)
         {
+            //obj.Price = 200 + (Convert.ToDecimal(obj.Weight)*Convert.ToDecimal(obj.Destination.Multiplier));
             await _context.Shipments.AddAsync(obj);
             await _context.SaveChangesAsync();
             return obj;
@@ -49,7 +41,7 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
 
         public async Task<IEnumerable<Shipment>> ReadAllShipmentsForAuthenticatedUser(string userSub)
         {
-            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(z => z.Destination).Where(x => x.UserSub == userSub).ToListAsync();
+            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(z => z.Destination).Where(x => x.StatusList.Any(c => c.Name.ToLower() != "completed" && c.Name.ToLower() != "cancelled") && x.UserSub == userSub).ToListAsync();
             return shipments != null ? shipments : throw new ShipmentNotFoundException();
         }
 
@@ -57,6 +49,23 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
         {
             var shipment = await _context.Shipments.Include(x => x.StatusList).FirstOrDefaultAsync(x => x.Id == id && x.UserSub == userSub);
             return shipment != null ? shipment : throw new ShipmentNotFoundException();
+        }
+        public async Task<Status> ReadStatusById(int id)
+        {
+            var status = await _context.Status.FirstOrDefaultAsync(x => x.Id == id);
+            return status != null ? status : throw new StatusNotFoundException();
+        }
+
+        public async Task<Shipment> UpdateShipment(Shipment shipmentObj)
+        {
+            var shipment = await _context.Shipments.AnyAsync(x => x.Id == shipmentObj.Id);
+            if (!shipment)
+            {
+                throw new ShipmentNotFoundException();
+            }
+            _context.Entry(shipmentObj).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return shipmentObj;
         }
     }
 }

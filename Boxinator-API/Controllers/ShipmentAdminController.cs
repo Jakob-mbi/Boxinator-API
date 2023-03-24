@@ -17,8 +17,8 @@ using Boxinator_API.DTOs.StatusDtos;
 namespace Boxinator_API.Controllers
 {
     [ApiController]
-    //[Authorize(Roles = "ADMIN")]
-    [Route("api/v1/[controller]")]
+    [Authorize]
+    [Route("api/v1/admin/shipment")]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiConventionType(typeof(DefaultApiConventions))]
@@ -138,7 +138,7 @@ namespace Boxinator_API.Controllers
         /// Delete shipments by id
         /// </summary>
         /// <returns></returns>
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("{id}/delete")]
         public async Task<IActionResult> DeleteShipment(int id)
         {
             try
@@ -160,7 +160,7 @@ namespace Boxinator_API.Controllers
         /// Update shipments by id
         /// </summary>
         /// <returns></returns>
-        [HttpPut("update/{id}")]
+        [HttpPut("{id}/update")]
         public async Task<IActionResult> PutShipment(int id, [FromBody] PutShipmentDTO shipment)
         {
 
@@ -171,7 +171,7 @@ namespace Boxinator_API.Controllers
             try
             {
                 var obj = _mapper.Map<Shipment>(shipment);
-                return Ok(await _shipmentContext.UpdateShipmentAdmin(obj));
+                return Ok(await _shipmentContext.UpdateShipment(obj));
             }
             catch (ShipmentNotFoundException ex)
             {
@@ -185,7 +185,7 @@ namespace Boxinator_API.Controllers
         /// Update shipment status by id
         /// </summary>
         /// <returns></returns>
-        [HttpPut("status/add/{shipmentid}")]
+        [HttpPut("{shipmentid}/addstatus")]
         public async Task<IActionResult> AddStatusToShipment(int shipmentid, [FromBody] StatusDto shipmentStatus)
         {
             try
@@ -194,7 +194,7 @@ namespace Boxinator_API.Controllers
                 var status = await _shipmentContext.ReadStatusById(shipmentStatus.Id);
                 if(shippment.StatusList.Any(x => x.Id == status.Id)) { throw new StatusAlredyExist(); }
                 shippment.StatusList.Add(status);
-                await _shipmentContext.UpdateShipmentAdmin(shippment);
+                await _shipmentContext.UpdateShipment(shippment);
             }
             catch (ShipmentNotFoundException ex)
             {
@@ -216,7 +216,7 @@ namespace Boxinator_API.Controllers
         /// Update shipment status by id
         /// </summary>
         /// <returns></returns>
-        [HttpPut("status/remove/{shipmentid}")]
+        [HttpPut("{shipmentid}/removestatus")]
         public async Task<IActionResult> RemoveStatusToShipment(int shipmentid, [FromBody] StatusDto shipmentStatus)
         {
             try
@@ -224,7 +224,7 @@ namespace Boxinator_API.Controllers
                 var shippment = await _shipmentContext.ReadShipmentByIdAdmin(shipmentid);
                 var status = shippment.StatusList.FirstOrDefault(x => x.Id == shipmentStatus.Id);
                 shippment.StatusList.Remove(status);
-                await _shipmentContext.UpdateShipmentAdmin(shippment);
+                await _shipmentContext.UpdateShipment(shippment);
             }
             catch (ShipmentNotFoundException ex)
             {

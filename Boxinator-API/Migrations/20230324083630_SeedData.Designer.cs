@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Boxinator_API.Migrations
 {
     [DbContext(typeof(BoxinatorDbContext))]
-    [Migration("20230322141705_SeedData")]
+    [Migration("20230324083630_SeedData")]
     partial class SeedData
     {
         /// <inheritdoc />
@@ -261,7 +261,7 @@ namespace Boxinator_API.Migrations
                             DestinationID = 1,
                             Price = 200m,
                             ReciverName = "John Smith",
-                            UserSub = "e1c3c5df-7f33-4e8f-9c17-ff04627347ee",
+                            UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077",
                             Weight = 50
                         },
                         new
@@ -271,7 +271,7 @@ namespace Boxinator_API.Migrations
                             DestinationID = 14,
                             Price = 400m,
                             ReciverName = "Alice Johnson",
-                            UserSub = "e7359cd5-6dec-4f8b-be74-0e3148eaa51f",
+                            UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077",
                             Weight = 60
                         },
                         new
@@ -281,7 +281,7 @@ namespace Boxinator_API.Migrations
                             DestinationID = 10,
                             Price = 300m,
                             ReciverName = "Bob Thompson",
-                            UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a",
+                            UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077",
                             Weight = 70
                         },
                         new
@@ -291,7 +291,7 @@ namespace Boxinator_API.Migrations
                             DestinationID = 3,
                             Price = 200m,
                             ReciverName = "John Smith",
-                            UserSub = "e1c3c5df-7f33-4e8f-9c17-ff04627347ee",
+                            UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077",
                             Weight = 50
                         },
                         new
@@ -313,6 +313,26 @@ namespace Boxinator_API.Migrations
                             ReciverName = "Bob Thompson",
                             UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a",
                             Weight = 30
+                        },
+                        new
+                        {
+                            Id = 7,
+                            BoxColor = "Pink",
+                            DestinationID = 8,
+                            Price = 400m,
+                            ReciverName = "Emily Davis",
+                            UserSub = "9e305eb4-7639-422d-9432-a3e001c6c5b7",
+                            Weight = 60
+                        },
+                        new
+                        {
+                            Id = 8,
+                            BoxColor = "Orange",
+                            DestinationID = 17,
+                            Price = 300m,
+                            ReciverName = "Bob Davis",
+                            UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a",
+                            Weight = 10
                         });
                 });
 
@@ -393,7 +413,7 @@ namespace Boxinator_API.Migrations
                     b.HasData(
                         new
                         {
-                            Sub = "e1c3c5df-7f33-4e8f-9c17-ff04627347ee",
+                            Sub = "44feb5ab-e680-4979-95f6-9cbc18d32077",
                             RoleId = 1
                         },
                         new
@@ -467,6 +487,16 @@ namespace Boxinator_API.Migrations
                         {
                             StatusListId = 1,
                             ShipmentsListId = 6
+                        },
+                        new
+                        {
+                            StatusListId = 4,
+                            ShipmentsListId = 7
+                        },
+                        new
+                        {
+                            StatusListId = 5,
+                            ShipmentsListId = 8
                         });
                 });
 

@@ -83,7 +83,7 @@ namespace Boxinator_API.Migrations
                     BoxColor = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DestinationID = table.Column<int>(type: "int", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    UserSub = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserSub = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>

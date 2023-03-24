@@ -17,7 +17,7 @@ using Boxinator_API.DTOs.StatusDtos;
 namespace Boxinator_API.Controllers
 {
     [ApiController]
-    [Authorize]
+    [Authorize(Roles="ADMIN")]
     [Route("api/v1/admin/shipment")]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]

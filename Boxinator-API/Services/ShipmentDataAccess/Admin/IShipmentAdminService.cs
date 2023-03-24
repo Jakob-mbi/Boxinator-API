@@ -43,12 +43,12 @@ namespace Boxinator_API.Services.ShipmentDataAccess.Admin
         /// <exception cref="ShipmentNotFoundException">Thrown if Shipment is not found</exception>
         /// <returns>Shipment</returns>
         public Task<IEnumerable<Shipment>> ReadShipmentByCustomer(string userSub);
-        
+
 
         /// <summary>
         /// Deletes Shipment with id
         /// </summary>
-        /// <param name="shipmentId"></param>
+        /// <param name="shipment"></param>
         /// <exception cref="ShipmentNotFoundException">Thrown if Shipment is not found</exception>
         /// <returns></returns>
         public Task DeleteShipment(Shipment shipment);

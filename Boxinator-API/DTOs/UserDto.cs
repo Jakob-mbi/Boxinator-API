@@ -5,7 +5,7 @@ namespace Boxinator_API.DTOs
 {
     public class UserDto
     {
-        public int Id { get; set; }
+
         [Required]
         public string Sub { get; set; }
         public string? DateOfBirth { get; set; }

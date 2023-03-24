@@ -4,6 +4,7 @@ namespace Boxinator_API.Models
 {
     public class User
     {
+       
         [Key]
         public string Sub { get; set; }
         public string? DateOfBirth { get; set; }

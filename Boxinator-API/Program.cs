@@ -14,6 +14,7 @@ namespace Boxinator_API
 {
     public class Program
     {
+      /*  private static WebApplicationBuilder _builder;*/
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -42,8 +43,7 @@ namespace Boxinator_API
 
             builder.Services.AddSwaggerGen(options =>
             {
-               
-
+              
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
@@ -109,12 +109,15 @@ namespace Boxinator_API
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.MapControllers();
 
             app.Run();
         }
+       
+
 
     }
 }

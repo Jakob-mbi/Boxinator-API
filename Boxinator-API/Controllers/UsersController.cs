@@ -40,7 +40,10 @@ namespace Boxinator_API.Controllers
             _configuration= configuration;
         }
 
-        // GET: api/Users
+        /// <summary>
+        /// List of Users
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
@@ -68,7 +71,10 @@ namespace Boxinator_API.Controllers
            // return Ok(_mapper.Map<IEnumerable<UserDto>>(await _userService.GetAllUsers()));
         }
 
-        // GET: api/Users/5
+        /// <summary>
+        /// Get User by sub
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("{sub}")]
         public async Task<ActionResult<UserDto>> GetUser(string sub)
         {
@@ -87,10 +93,12 @@ namespace Boxinator_API.Controllers
         }
 
         // This endpoint is used to update user information in Account page
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update user info
+        /// </summary>
+        /// <returns></returns>
         [HttpPut()]
-        [Authorize]
+
         public async Task<IActionResult> PutUser(UserPutDto userPutDto)
         {
             var subject = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -103,8 +111,10 @@ namespace Boxinator_API.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Add new user
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("{roleId}")]
         public async Task<ActionResult<UserDto>> PostUser(int roleId)
         {
@@ -121,13 +131,16 @@ namespace Boxinator_API.Controllers
 
         }
 
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        /// <summary>
+        /// Delete user by sub
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete("{sub}")]
+        public async Task<IActionResult> DeleteUser(string sub)
         {
             try
             {
-                await _userService.DeleteUser(id);
+                await _userService.DeleteUser(sub);
             }
             catch(UserNotFoundException ex)
             {
@@ -141,71 +154,12 @@ namespace Boxinator_API.Controllers
             return NoContent();
         }
 
-        // GET: api/Users/SubID2
-        /*[HttpGet("usersSub/{sub}")]
-        public async Task<ActionResult<UserDto>> GetUserSub(string sub)
-        {
-            try
-            {
-                return Ok(_mapper.Map<UserDto>(await _userService.GetUserBySub(sub)));
-            }
-            catch (UserNotFoundException ex)
-            {
-                return NotFound(new ProblemDetails
-                {
-                    Detail = ex.Message,
-                    Status = (int)HttpStatusCode.NotFound
-                });
-            }
-        }*/
-
-
-
-        /*
-                [HttpGet("usersSub")]
-                public async Task<ActionResult<UserDto>> GetUserSub()
-                {
-
-                    if (!Request.Headers.TryGetValue("Authorization", out var token))
-                    {
-                        return Unauthorized();
-                    }
-
-                    // Extract the JWT token from the Authorization header
-                    var jwtToken = token.ToString().Substring("Bearer ".Length).Trim();
-
-                    // Decode the JWT token
-                    var handler = new JwtSecurityTokenHandler();
-                    var validationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = , // Set your security key here
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                    SecurityToken validatedToken;
-                    var claimsPrincipal = handler.ValidateToken(jwtToken, validationParameters, out validatedToken);
-
-                    // Get the sub claim from the JWT token
-                    var subClaim = claimsPrincipal.FindFirst("sub")?.Value;
-
-                    try
-                    {
-                        return Ok(_mapper.Map<UserDto>(await _userService.GetUserBySub(subClaim)));
-                    }
-                    catch (UserNotFoundException ex)
-                    {
-                        return NotFound(new ProblemDetails
-                        {
-                            Detail = ex.Message,
-                            Status = (int)HttpStatusCode.NotFound
-                        });
-                    }
-                }
-        */
-
         // This end point is used to retrieve user information into Account page
-        
+        /// <summary>
+        /// Get user by sub 
+        /// </summary>
+        /// <returns></returns>
+
         [HttpGet("usersSub")]
         public async Task<ActionResult<UserDto>> GetUserSub()
         {

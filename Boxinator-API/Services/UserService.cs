@@ -59,9 +59,9 @@ namespace Boxinator_API.Services
             return user;
         }
 
-        public async Task DeleteUser(int id)
+        public async Task DeleteUser(string sub)
         {
-            var user = await _context.Users.FindAsync(id);  
+            var user = await _context.Users.FindAsync(sub);  
             if (user == null)
             {
                 //throw new UserNotFoundException(id);

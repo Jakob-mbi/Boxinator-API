@@ -24,6 +24,7 @@ namespace Boxinator_API.Controllers
 {
     [Route("api/users")]
     [ApiController]
+    [Authorize]
     [EnableCors("_myAllowSpecificOrigins")]
     public class UsersController : ControllerBase
     {
@@ -204,6 +205,7 @@ namespace Boxinator_API.Controllers
         */
 
         // This end point is used to retrieve user information into Account page
+        
         [HttpGet("usersSub")]
         public async Task<ActionResult<UserDto>> GetUserSub()
         {

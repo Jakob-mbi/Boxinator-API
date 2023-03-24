@@ -46,13 +46,12 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
         public Task<Shipment> ReadShipmentById(int id, string userSub);
 
         /// <summary>
-        /// Cancel a Shipment
+        /// Find Destination by id
         /// </summary>
-        /// <param name="shipmentId"></param>
-        /// <param name="userSub"></param>
-        /// <exception cref="ShipmentNotFoundException">Thrown if Shipment is not found</exception>
-        /// <returns></returns>
-        public Task<Shipment> CancelShipment(int shipmentId, string userSub);
+        /// <param name="id"></param>
+        /// <exception cref="CountryNotFoundException">Thrown if Shipment is not found</exception>
+        /// <returns>Shipment</returns>
+        public Task<Country> FindDestinationById(int id);
 
     }
 }

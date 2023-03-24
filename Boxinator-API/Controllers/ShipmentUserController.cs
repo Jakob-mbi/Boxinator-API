@@ -119,12 +119,24 @@ namespace Boxinator_API.Controllers
         [HttpPost("new")]
         public async Task<ActionResult<PostShipmentDTO>> PostShipment([FromBody] PostShipmentDTO newShipment)
         {
-            var shipment = _mapper.Map<Shipment>(newShipment);
-            shipment.UserSub=_sub;
-            await _shipmentContext.CreateNewShipment(shipment);
+            try
+            {
 
-            return CreatedAtAction(nameof(GetShipmentbyId), new { id = shipment.Id }, shipment); 
-            
+                var shipment = _mapper.Map<Shipment>(newShipment);
+                shipment.UserSub = _sub;
+                //shipment.Destination = await _shipmentContext.FindDestinationById(newShipment.DestinationID);
+                await _shipmentContext.CreateNewShipment(shipment);
+
+                return CreatedAtAction(nameof(GetShipmentbyId), new { id = shipment.Id }, shipment);
+            }
+            catch(CountryNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+
+            }
 
         }
         /// <summary>
@@ -143,8 +155,8 @@ namespace Boxinator_API.Controllers
         /// cancelle shipment
         /// </summary>
         /// <returns></returns>
-        [HttpPut("status/cancelled/{shipmentid}")]
-        public async Task<IActionResult> AddStatusToShipment(int shipmentid)
+        [HttpPut("{shipmentid}/cancel")]
+        public async Task<IActionResult> CancelShipment(int shipmentid)
         {
             try
             {

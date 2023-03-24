@@ -138,7 +138,7 @@ namespace Boxinator_API.Controllers
         /// Delete shipments by id
         /// </summary>
         /// <returns></returns>
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("{id}/delete")]
         public async Task<IActionResult> DeleteShipment(int id)
         {
             try
@@ -160,7 +160,7 @@ namespace Boxinator_API.Controllers
         /// Update shipments by id
         /// </summary>
         /// <returns></returns>
-        [HttpPut("update/{id}")]
+        [HttpPut("{id}/update")]
         public async Task<IActionResult> PutShipment(int id, [FromBody] PutShipmentDTO shipment)
         {
 
@@ -185,7 +185,7 @@ namespace Boxinator_API.Controllers
         /// Update shipment status by id
         /// </summary>
         /// <returns></returns>
-        [HttpPut("status/add/{shipmentid}")]
+        [HttpPut("{shipmentid}/addstatus")]
         public async Task<IActionResult> AddStatusToShipment(int shipmentid, [FromBody] StatusDto shipmentStatus)
         {
             try
@@ -216,7 +216,7 @@ namespace Boxinator_API.Controllers
         /// Update shipment status by id
         /// </summary>
         /// <returns></returns>
-        [HttpPut("status/remove/{shipmentid}")]
+        [HttpPut("{shipmentid}/removestatus")]
         public async Task<IActionResult> RemoveStatusToShipment(int shipmentid, [FromBody] StatusDto shipmentStatus)
         {
             try

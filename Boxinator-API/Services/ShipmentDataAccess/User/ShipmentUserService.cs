@@ -14,22 +14,14 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
             _context = context;
         }
 
-        public async Task<Shipment> CancelShipment(int shipmentId, string userSub)
+        public async Task<Country> FindDestinationById(int id)
         {
-            var shipment = await _context.Shipments.Where(u => u.UserSub == userSub).FirstOrDefaultAsync(x => x.Id == shipmentId);
-            if (shipment == null)
-            {
-                throw new ShipmentNotFoundException();
-            }
-            var status = _context.Status.Where(s => s.Name.ToLower() == "canceled").FirstOrDefault();
-            shipment.StatusList.Add(status);
-            status.ShipmentsList.Add(shipment);
-            await _context.SaveChangesAsync();
-            return shipment;
+            var country = await _context.Countries.FirstOrDefaultAsync(x => x.Id == id);
+            return country != null ? country : throw new CountryNotFoundException();
         }
-
         public async Task<Shipment> CreateNewShipment(Shipment obj)
         {
+            //obj.Price = 200 + (Convert.ToDecimal(obj.Weight)*Convert.ToDecimal(obj.Destination.Multiplier));
             await _context.Shipments.AddAsync(obj);
             await _context.SaveChangesAsync();
             return obj;

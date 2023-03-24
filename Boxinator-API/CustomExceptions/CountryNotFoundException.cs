@@ -6,5 +6,9 @@
         {
 
         }
+        public CountryNotFoundException() : base($"Country was not found")
+        {
+
+        }
     }
 }

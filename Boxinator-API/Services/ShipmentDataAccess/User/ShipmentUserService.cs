@@ -21,7 +21,12 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
         }
         public async Task<Shipment> CreateNewShipment(Shipment obj)
         {
-            //obj.Price = 200 + (Convert.ToDecimal(obj.Weight)*Convert.ToDecimal(obj.Destination.Multiplier));
+            var status = await _context.Status.FirstOrDefaultAsync(x => x.Id == 1);
+            var country = await _context.Countries.FirstOrDefaultAsync(country => country.Id == obj.DestinationID);
+            decimal multiplaier = country.Multiplier;
+            obj.StatusList = new List<Status>();
+            obj.StatusList.Add(status);
+            obj.Price = 200 + (Convert.ToDecimal(obj.Weight)* multiplaier);
             await _context.Shipments.AddAsync(obj);
             await _context.SaveChangesAsync();
             return obj;

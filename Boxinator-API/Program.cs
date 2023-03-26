@@ -20,14 +20,14 @@ namespace Boxinator_API
             var builder = WebApplication.CreateBuilder(args);
 
 
-            string myCorsPolicy = "_myAllowSpecificOrigins";
+            string myCorsPolicy = builder.Configuration["JWT:policy"];;
 
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy(name: myCorsPolicy,
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+                        policy.WithOrigins(builder.Configuration["JWT:cors"]).AllowAnyHeader().AllowAnyMethod();
                     });
             });
 

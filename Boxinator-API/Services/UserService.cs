@@ -1,4 +1,4 @@
-﻿using Boxinator_API.Exceptions;
+﻿using Boxinator_API.CustomExceptions;
 using Boxinator_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -75,22 +75,6 @@ namespace Boxinator_API.Services
         {
             return await _context.Users.Include(x => x.ShipmentsList).ToListAsync();
         }
-
-       /* public Task<User> GetUserById(int id)
-        {
-            throw new NotImplementedException();
-        }*/
-
-        /*public async Task<User> GetUserById(int id)
-        {
-            var user = await _context.Users.Include(x => x.ShipmentsList).FirstOrDefaultAsync(x => x.Sub == "test");
-            if(user is null)
-            {
-                throw new UserNotFoundException(id);
-            }
-            return user;
-        }
-*/
 
       
         public async Task<User> GetUserBySub(string sub)

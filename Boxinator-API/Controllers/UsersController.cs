@@ -10,7 +10,6 @@ using Boxinator_API.Services;
 using AutoMapper;
 using Boxinator_API.DTOs;
 using System.Net;
-using Boxinator_API.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.IdentityModel.Tokens;
@@ -19,6 +18,7 @@ using System.Security.Claims;
 using Newtonsoft.Json;
 using Boxinator_API.ExtractToken;
 using Microsoft.AspNetCore.SignalR;
+using Boxinator_API.CustomExceptions;
 
 namespace Boxinator_API.Controllers
 {

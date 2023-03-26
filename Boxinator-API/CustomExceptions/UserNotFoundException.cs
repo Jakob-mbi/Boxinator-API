@@ -1,4 +1,4 @@
-﻿namespace Boxinator_API.Exceptions
+﻿namespace Boxinator_API.CustomExceptions
 {
     public class UserNotFoundException : Exception
     {

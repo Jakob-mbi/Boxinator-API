@@ -97,6 +97,28 @@ namespace Boxinator_API.Controllers
                 });
             }
         }
+        /// <summary>
+        /// List of all shipments
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("all")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<GetShipmentDTO>>> GetAllShipments()
+        {
+
+            try
+            {
+                var sub = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllShipmentsForAuthenticatedUser(sub)));
+            }
+            catch (ShipmentNotFoundException ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
+        }
 
         /// <summary>
         /// Get shipment by id

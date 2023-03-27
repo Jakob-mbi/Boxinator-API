@@ -32,6 +32,11 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
             return obj;
         }
 
+        public async Task<IEnumerable<Shipment>> ReadAllPreviousShipmentsForAuthenticatedUser(string userSub)
+        {
+            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(x => x.Destination).Where(x=>x.UserSub == userSub).ToListAsync();
+            return shipments != null ? shipments : throw new ShipmentNotFoundException();
+        }
         public async Task<IEnumerable<Shipment>> ReadAllCancelledShipmentsForAuthenticatedUser(string userSub)
         {
             var shipments = await _context.Shipments.Include(x => x.StatusList).Include(x => x.Destination).Where(x => x.StatusList.Any(c => c.Name.ToLower() == "cancelled") && x.UserSub == userSub).ToListAsync();

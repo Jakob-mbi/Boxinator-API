@@ -98,12 +98,12 @@ namespace Boxinator_API.Controllers
             }
         }
         /// <summary>
-        /// List of all shipments
+        /// List of all previous shipments
         /// </summary>
         /// <returns></returns>
-        [HttpGet("all")]
+        [HttpGet("previous")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<GetShipmentDTO>>> GetAllShipments()
+        public async Task<ActionResult<IEnumerable<GetShipmentDTO>>> GetAllPreviousShipments()
         {
 
             try

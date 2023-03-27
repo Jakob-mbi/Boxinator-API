@@ -192,7 +192,7 @@ namespace Boxinator_API.Controllers
             {
                 var shippment = await _shipmentContext.ReadShipmentByIdAdmin(shipmentid);
                 var status = await _shipmentContext.ReadStatusById(shipmentStatus.Id);
-                if(shippment.StatusList.Any(x => x.Id == status.Id)) { throw new StatusAlredyExist(); }
+                //if(shippment.StatusList.Any(x => x.Id == status.Id)) { throw new StatusAlredyExist(); }
                 shippment.StatusList.Add(status);
                 await _shipmentContext.UpdateShipment(shippment);
             }
@@ -203,13 +203,13 @@ namespace Boxinator_API.Controllers
                     Detail = ex.Message
                 });
             }
-            catch(StatusAlredyExist ex) 
-            {
-                return NotFound(new ProblemDetails
-                {
-                    Detail = ex.Message
-                });
-            }
+            //catch(StatusAlredyExist ex) 
+            //{
+            //    return NotFound(new ProblemDetails
+            //    {
+            //        Detail = ex.Message
+            //    });
+            //}
             return NoContent();
         }
         /// <summary>

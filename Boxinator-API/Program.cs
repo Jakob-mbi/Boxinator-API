@@ -20,7 +20,7 @@ namespace Boxinator_API
             var builder = WebApplication.CreateBuilder(args);
 
 
-            string myCorsPolicy = builder.Configuration["JWT:policy"];;
+            string myCorsPolicy = builder.Configuration["JWT:policy"];
 
             builder.Services.AddCors(options =>
             {

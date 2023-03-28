@@ -32,6 +32,11 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
             return obj;
         }
 
+        public async Task<IEnumerable<Shipment>> ReadAllPreviousShipmentsForAuthenticatedUser(string userSub)
+        {
+            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(x => x.Destination).Where(x=>x.UserSub == userSub).ToListAsync();
+            return shipments != null ? shipments : throw new ShipmentNotFoundException();
+        }
         public async Task<IEnumerable<Shipment>> ReadAllCancelledShipmentsForAuthenticatedUser(string userSub)
         {
             var shipments = await _context.Shipments.Include(x => x.StatusList).Include(x => x.Destination).Where(x => x.StatusList.Any(c => c.Name.ToLower() == "cancelled") && x.UserSub == userSub).ToListAsync();
@@ -46,7 +51,8 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
 
         public async Task<IEnumerable<Shipment>> ReadAllShipmentsForAuthenticatedUser(string userSub)
         {
-            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(z => z.Destination).Where(x => x.StatusList.Any(c => c.Name.ToLower() != "completed" && c.Name.ToLower() != "cancelled") && x.UserSub == userSub).ToListAsync();
+            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(z => z.Destination).Where(x => x.StatusList.Any(c => c.Name.ToLower() != "completed") && x.UserSub == userSub).ToListAsync();
+            shipments.RemoveAll(x => x.StatusList.Any(x=>x.Name.ToLower()== "cancelled"));
             return shipments != null ? shipments : throw new ShipmentNotFoundException();
         }
 

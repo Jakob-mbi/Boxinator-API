@@ -43,7 +43,7 @@ namespace Boxinator_API.Models
 
             modelBuilder.Entity<Status>().HasData(
             new Status { Id = 1, Name = "CREATED" },
-            new Status { Id = 2, Name = "RECIEVED" },
+            new Status { Id = 2, Name = "RECEIVED" },
             new Status { Id = 3, Name = "INTRANSIT" },
             new Status { Id = 4, Name = "COMPLETED" },
             new Status { Id = 5, Name = "CANCELLED" }

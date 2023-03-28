@@ -16,7 +16,7 @@ namespace Boxinator_API.DTOs.ShipmentDtos
         public int DestinationID { get; set; }
         [MaxLength(100)]
         public string? Email { get; set; }
-        public string? UserSub { get; set; }
+
         [Range(typeof(decimal), "0", "1000")]
         public decimal Price { get; set; }
     }

@@ -15,7 +15,7 @@ namespace Boxinator_API.Services
             _context = context;
         }
 
-        public async Task<ActionResult<User>> AddUser(string sub, User user, int roleId, string email)
+        public async Task<ActionResult<User>> AddUser(string sub, User user, string email)
         {
            
 

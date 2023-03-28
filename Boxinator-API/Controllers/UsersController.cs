@@ -115,19 +115,18 @@ namespace Boxinator_API.Controllers
         /// Add new user
         /// </summary>
         /// <returns></returns>
-        [HttpPost("{roleId}")]
-        public async Task<ActionResult<UserDto>> PostUser(int roleId)
+        [HttpPost("newuser")]
+        public async Task<ActionResult<UserDto>> PostUser()
         {
             var subject = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var email = User.FindFirstValue(ClaimTypes.Email);
         
-            Console.WriteLine(subject + " : " + roleId);
             UserCreateDto userCreateDto = new UserCreateDto();
            
             var user = _mapper.Map<User>(userCreateDto);
 
-            await _userService.AddUser(subject, user, roleId, email);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Sub }, user);
+            await _userService.AddUser(subject, user, email);
+            return Ok();
 
         }
 

@@ -109,7 +109,7 @@ namespace Boxinator_API.Controllers
             try
             {
                 var sub = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllShipmentsForAuthenticatedUser(sub)));
+                return Ok(_mapper.Map<IEnumerable<GetShipmentDTO>>(await _shipmentContext.ReadAllPreviousShipmentsForAuthenticatedUser(sub)));
             }
             catch (ShipmentNotFoundException ex)
             {

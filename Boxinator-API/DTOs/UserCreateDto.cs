@@ -13,6 +13,5 @@ namespace Boxinator_API.DTOs
         public string? Country { get; set; }
         [MaxLength(100)]
         public string? ContactNumber { get; set; }
-        public int RoleId { get; set; }
     }
 }

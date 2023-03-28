@@ -54,11 +54,12 @@ namespace Boxinator_API.Services.ShipmentDataAccess.Admin
 
         public async Task<Shipment> UpdateShipment(Shipment shipmentObj)
         {
-            var shipment = await _context.Shipments.AnyAsync(x => x.Id == shipmentObj.Id);
-            if (!shipment)
+            var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.Id == shipmentObj.Id);
+            if (shipment is null)
             {
                 throw new ShipmentNotFoundException();
             }
+            shipmentObj.UserSub = shipment.UserSub;
             _context.Entry(shipmentObj).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return shipmentObj;

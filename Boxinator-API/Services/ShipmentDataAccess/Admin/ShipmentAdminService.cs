@@ -59,8 +59,15 @@ namespace Boxinator_API.Services.ShipmentDataAccess.Admin
             {
                 throw new ShipmentNotFoundException();
             }
-            shipmentObj.UserSub = shipment.UserSub;
-            _context.Entry(shipmentObj).State = EntityState.Modified;
+           /* shipmentObj.UserSub = shipment.UserSub;*/
+           shipment.ReciverName= shipmentObj.ReciverName;
+           shipment.Weight= shipmentObj.Weight;
+           shipment.BoxColor= shipmentObj.BoxColor;
+           shipment.DestinationID= shipmentObj.DestinationID;
+           shipment.Email= shipmentObj.Email;
+           shipment.UserSub = shipment.UserSub;
+           shipment.Price= shipmentObj.Price;
+           //_context.Entry(shipmentObj).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return shipmentObj;
         }

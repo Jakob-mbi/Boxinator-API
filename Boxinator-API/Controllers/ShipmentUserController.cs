@@ -178,7 +178,7 @@ namespace Boxinator_API.Controllers
         {
             var shipment = _mapper.Map<Shipment>(newShipment);
             await _shipmentContext.CreateNewShipment(shipment);
-
+            _shipmentContext.SendEmail(newShipment.Email);
             return NoContent();
         }
         /// <summary>

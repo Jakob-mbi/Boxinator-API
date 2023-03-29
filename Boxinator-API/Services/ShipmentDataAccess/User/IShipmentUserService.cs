@@ -61,7 +61,11 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
         /// <returns>Shipment</returns>
         public Task<Country> FindDestinationById(int id);
 
-        
-
+        /// <summary>
+        /// Send email to anonyms customer
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns></returns>
+        public void SendEmail(string userEmail);
     }
 }

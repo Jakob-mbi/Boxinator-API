@@ -2,6 +2,9 @@
 using Boxinator_API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 
 namespace Boxinator_API.Services.ShipmentDataAccess.User
 {
@@ -81,6 +84,26 @@ namespace Boxinator_API.Services.ShipmentDataAccess.User
             _context.Entry(shipmentObj).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return shipmentObj;
+        }
+        public void SendEmail(string userEmail)
+        {
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse("info@boxinator.com"));
+            email.To.Add(MailboxAddress.Parse(userEmail));
+            email.Subject = "Thanks for your order";
+            email.Body = new TextPart("plain")
+            {
+                Text = @" Thanks for choosing Boxinator!
+
+                  Please consider becoming a registered user using the link below:
+                    https://lemur-3.cloud-iam.com/auth/realms/boxinator-keycloak-server/login-actions/registration?client_id=boxinator-client&tab_id=Ent2JMEF-5I
+                "
+            };
+            using var smtp = new SmtpClient();
+            smtp.Connect("smtp.ethereal.email", 587,SecureSocketOptions.StartTls);
+            smtp.Authenticate("keyshawn.mayert36@ethereal.email", "mUW9HtVryfDH6vWEuN");
+            smtp.Send(email);
+            smtp.Disconnect(true);
         }
     }
 }

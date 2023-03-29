@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_ae1aaec64088470d8f7a6bb0b09baabd }}/jakobmbi/boxinator:${{ github.sha }}
-        file: ./Dockerfile
+        file: ./Boxinator-API/Dockerfile
 
   deploy:
     runs-on: ubuntu-latest

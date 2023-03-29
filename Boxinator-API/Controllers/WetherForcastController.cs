@@ -10,7 +10,7 @@ namespace Boxinator_API.Controllers
     {
         private static readonly string[] Summaries = new[]
         {
-        "FreezingT", "BracingT", "ChillyT", "CoolT", "MildT", "WarmT", "BalmyT", "HotT", "SwelteringT", "ScorchingT"
+        "FreezingTe", "BracingTe", "ChillyTe", "CoolTe", "MildTe", "WarmTe", "BalmyTe", "HotTe", "SwelteringTe", "ScorchingTe"
         };
 
         private readonly ILogger<WeatherForecastController> _logger;

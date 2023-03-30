@@ -9,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using System.Reflection;
+using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Boxinator_API
 {
@@ -63,6 +65,8 @@ namespace Boxinator_API
                     options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection"));
                 });
+
+
             //AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -97,6 +101,15 @@ namespace Boxinator_API
                     };
                 });
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider
+                    .GetRequiredService<BoxinatorDbContext>();
+
+                // Here is the migration executed
+                dbContext.Database.Migrate();
+            }
 
             app.UseCors(myCorsPolicy);
 

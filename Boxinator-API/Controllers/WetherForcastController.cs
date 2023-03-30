@@ -5,12 +5,12 @@ using System.Net.Mime;
 namespace Boxinator_API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("testendpoint/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
-        "FreezingT", "BracingT", "ChillyT", "CoolT", "MildT", "WarmT", "BalmyT", "HotT", "SwelteringT", "ScorchingT"
+        "FreezingTes", "BracingTes", "ChillyTes", "CoolTes", "MildTes", "WarmTes", "BalmyTes", "HotTes", "SwelteringTes", "ScorchingTes"
         };
 
         private readonly ILogger<WeatherForecastController> _logger;

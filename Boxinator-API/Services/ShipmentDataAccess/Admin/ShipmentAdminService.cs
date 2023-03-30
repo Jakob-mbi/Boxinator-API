@@ -33,8 +33,9 @@ namespace Boxinator_API.Services.ShipmentDataAccess.Admin
 
         public async Task<IEnumerable<Shipment>> ReadAllCurrentShipmentsForAdmin()
         {
-            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(x => x.Destination).Where(x => x.StatusList.Any(c => c.Id != 4)).ToListAsync();
-            shipments.RemoveAll(x => x.StatusList.Any(x => x.Id == 5));
+            var shipments = await _context.Shipments.Include(x => x.StatusList).Include(x => x.Destination).ToListAsync();
+            shipments.RemoveAll(x => x.StatusList.Last().Name.ToUpper() == "CANCELLED");
+            shipments.RemoveAll(x => x.StatusList.Last().Name.ToUpper() == "COMPLETED");
             return shipments != null ? shipments : throw new ShipmentNotFoundException();
         }
 

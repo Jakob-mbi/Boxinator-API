@@ -7,7 +7,7 @@ on:
   push:
     branches:
       - master
-workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -22,16 +22,16 @@ jobs:
     - name: Log in to registry
       uses: docker/login-action@v1
       with:
-        registry: https://index.docker.io/v2/
-        username: ${{ secrets.AzureAppService_ContainerUsername_795fdd26d8494ebca16f20d20679bc3b }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_f43301e8dfcd44d596808da071b5f5ec }}
+        registry: https://index.docker.io/v1/
+        username: ${{ secrets.AzureAppService_ContainerUsername_8dd568aa1b29432f9fe0cc05c0a19c26 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_860515afb72d4f2798766ac379a68cbb }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_795fdd26d8494ebca16f20d20679bc3b }}/jakobmbi/boxinator:${{ github.sha }}
-        file: ./Boxinator-API/Dockerfile
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_8dd568aa1b29432f9fe0cc05c0a19c26 }}/jakobmbi/boxinator:${{ github.sha }}
+        file: ./Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'Boxinator-api-v2'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_ab542714fef74289a034153e17c57c4a }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_795fdd26d8494ebca16f20d20679bc3b }}/jakobmbi/boxinator:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_14996a0e3f2b46faba142eeb919b8dc9 }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_8dd568aa1b29432f9fe0cc05c0a19c26 }}/jakobmbi/boxinator:${{ github.sha }}'

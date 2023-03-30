@@ -16,13 +16,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Newtonsoft.Json;
-using Boxinator_API.ExtractToken;
 using Microsoft.AspNetCore.SignalR;
 using Boxinator_API.CustomExceptions;
 
 namespace Boxinator_API.Controllers
 {
-    [Route("api/users")]
+    [Route("api/v1/users")]
     [ApiController]
     [Authorize]
     [EnableCors("_myAllowSpecificOrigins")]

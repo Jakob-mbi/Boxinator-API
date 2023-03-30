@@ -5,7 +5,7 @@ using System.Net.Mime;
 namespace Boxinator_API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("testendpoint/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

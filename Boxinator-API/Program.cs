@@ -27,7 +27,8 @@ namespace Boxinator_API
                 options.AddPolicy(name: myCorsPolicy,
                     policy =>
                     {
-                        policy.WithOrigins(builder.Configuration["JWT:cors"]).AllowAnyHeader().AllowAnyMethod();
+                        policy.WithOrigins(builder.Configuration["JWT:cors1"]).AllowAnyHeader().AllowAnyMethod();
+                        policy.WithOrigins(builder.Configuration["JWT:cors2"]).AllowAnyHeader().AllowAnyMethod();
                     });
             });
 

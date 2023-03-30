@@ -102,14 +102,14 @@ namespace Boxinator_API
                 });
             var app = builder.Build();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var dbContext = scope.ServiceProvider
-                    .GetRequiredService<BoxinatorDbContext>();
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var dbContext = scope.ServiceProvider
+            //        .GetRequiredService<BoxinatorDbContext>();
 
-                // Here is the migration executed
-                dbContext.Database.Migrate();
-            }
+            //    // Here is the migration executed
+            //    dbContext.Database.Migrate();
+            //}
 
             app.UseCors(myCorsPolicy);
 

@@ -7,7 +7,7 @@
 namespace Boxinator_API.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedData : Migration
+    public partial class SeedDataV2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -60,7 +60,7 @@ namespace Boxinator_API.Migrations
                 values: new object[,]
                 {
                     { 1, "CREATED" },
-                    { 2, "RECIEVED" },
+                    { 2, "RECEIVED" },
                     { 3, "INTRANSIT" },
                     { 4, "COMPLETED" },
                     { 5, "CANCELLED" }
@@ -83,14 +83,14 @@ namespace Boxinator_API.Migrations
                 columns: new[] { "Id", "BoxColor", "DestinationID", "Email", "Price", "ReciverName", "UserSub", "Weight" },
                 values: new object[,]
                 {
-                    { 1, "Red", 1, null, 200m, "John Smith", "44feb5ab-e680-4979-95f6-9cbc18d32077", 50 },
-                    { 2, "Blue", 14, null, 400m, "Alice Johnson", "44feb5ab-e680-4979-95f6-9cbc18d32077", 60 },
-                    { 3, "Green", 10, null, 300m, "Bob Thompson", "44feb5ab-e680-4979-95f6-9cbc18d32077", 70 },
-                    { 4, "Yellow", 3, null, 200m, "John Smith", "44feb5ab-e680-4979-95f6-9cbc18d32077", 50 },
-                    { 5, "Purple", 8, null, 400m, "Emily Davis", "9e305eb4-7639-422d-9432-a3e001c6c5b7", 20 },
-                    { 6, "Orange", 17, null, 300m, "Bob Thompson", "c7643ce3-acaa-470e-8f11-a634dccad52a", 30 },
-                    { 7, "Pink", 8, null, 400m, "Emily Davis", "9e305eb4-7639-422d-9432-a3e001c6c5b7", 60 },
-                    { 8, "Orange", 17, null, 300m, "Bob Davis", "c7643ce3-acaa-470e-8f11-a634dccad52a", 10 }
+                    { 1, "#eb4034", 1, null, 200m, "John Smith", "44feb5ab-e680-4979-95f6-9cbc18d32077", 5 },
+                    { 2, "#15ad07", 14, null, 212m, "Alice Johnson", "44feb5ab-e680-4979-95f6-9cbc18d32077", 1 },
+                    { 3, "#0c1fed", 10, null, 208m, "Bob Thompson", "44feb5ab-e680-4979-95f6-9cbc18d32077", 1 },
+                    { 4, "#fcef2d", 3, null, 200m, "John Smith", "44feb5ab-e680-4979-95f6-9cbc18d32077", 2 },
+                    { 5, "#8e2dfc", 19, null, 208m, "Emily Davis", "9e305eb4-7639-422d-9432-a3e001c6c5b7", 1 },
+                    { 6, "#fa05b9", 17, null, 235m, "Bob Thompson", "c7643ce3-acaa-470e-8f11-a634dccad52a", 5 },
+                    { 7, "#f76714", 8, null, 216m, "Emily Davis", "9e305eb4-7639-422d-9432-a3e001c6c5b7", 2 },
+                    { 8, "#1ccfd9", 22, null, 298m, "Bob Davis", "c7643ce3-acaa-470e-8f11-a634dccad52a", 8 }
                 });
 
             migrationBuilder.InsertData(
@@ -189,22 +189,12 @@ namespace Boxinator_API.Migrations
             migrationBuilder.DeleteData(
                 table: "Countries",
                 keyColumn: "Id",
-                keyValue: 19);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
                 keyValue: 20);
 
             migrationBuilder.DeleteData(
                 table: "Countries",
                 keyColumn: "Id",
                 keyValue: 21);
-
-            migrationBuilder.DeleteData(
-                table: "Countries",
-                keyColumn: "Id",
-                keyValue: 22);
 
             migrationBuilder.DeleteData(
                 table: "ShipmentStatus",
@@ -355,6 +345,16 @@ namespace Boxinator_API.Migrations
                 table: "Countries",
                 keyColumn: "Id",
                 keyValue: 17);
+
+            migrationBuilder.DeleteData(
+                table: "Countries",
+                keyColumn: "Id",
+                keyValue: 19);
+
+            migrationBuilder.DeleteData(
+                table: "Countries",
+                keyColumn: "Id",
+                keyValue: 22);
 
             migrationBuilder.DeleteData(
                 table: "Users",

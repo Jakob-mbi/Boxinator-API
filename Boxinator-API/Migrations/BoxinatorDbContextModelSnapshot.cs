@@ -222,82 +222,82 @@ namespace Boxinator_API.Migrations
                         new
                         {
                             Id = 1,
-                            BoxColor = "Red",
+                            BoxColor = "#eb4034",
                             DestinationID = 1,
                             Price = 200m,
                             ReciverName = "John Smith",
                             UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077",
-                            Weight = 50
+                            Weight = 5
                         },
                         new
                         {
                             Id = 2,
-                            BoxColor = "Blue",
+                            BoxColor = "#15ad07",
                             DestinationID = 14,
-                            Price = 400m,
+                            Price = 212m,
                             ReciverName = "Alice Johnson",
                             UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077",
-                            Weight = 60
+                            Weight = 1
                         },
                         new
                         {
                             Id = 3,
-                            BoxColor = "Green",
+                            BoxColor = "#0c1fed",
                             DestinationID = 10,
-                            Price = 300m,
+                            Price = 208m,
                             ReciverName = "Bob Thompson",
                             UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077",
-                            Weight = 70
+                            Weight = 1
                         },
                         new
                         {
                             Id = 4,
-                            BoxColor = "Yellow",
+                            BoxColor = "#fcef2d",
                             DestinationID = 3,
                             Price = 200m,
                             ReciverName = "John Smith",
                             UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077",
-                            Weight = 50
+                            Weight = 2
                         },
                         new
                         {
                             Id = 5,
-                            BoxColor = "Purple",
-                            DestinationID = 8,
-                            Price = 400m,
+                            BoxColor = "#8e2dfc",
+                            DestinationID = 19,
+                            Price = 208m,
                             ReciverName = "Emily Davis",
                             UserSub = "9e305eb4-7639-422d-9432-a3e001c6c5b7",
-                            Weight = 20
+                            Weight = 1
                         },
                         new
                         {
                             Id = 6,
-                            BoxColor = "Orange",
+                            BoxColor = "#fa05b9",
                             DestinationID = 17,
-                            Price = 300m,
+                            Price = 235m,
                             ReciverName = "Bob Thompson",
                             UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a",
-                            Weight = 30
+                            Weight = 5
                         },
                         new
                         {
                             Id = 7,
-                            BoxColor = "Pink",
+                            BoxColor = "#f76714",
                             DestinationID = 8,
-                            Price = 400m,
+                            Price = 216m,
                             ReciverName = "Emily Davis",
                             UserSub = "9e305eb4-7639-422d-9432-a3e001c6c5b7",
-                            Weight = 60
+                            Weight = 2
                         },
                         new
                         {
                             Id = 8,
-                            BoxColor = "Orange",
-                            DestinationID = 17,
-                            Price = 300m,
+                            BoxColor = "#1ccfd9",
+                            DestinationID = 22,
+                            Price = 298m,
                             ReciverName = "Bob Davis",
                             UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a",
-                            Weight = 10
+                            Weight = 8
                         });
                 });
 
@@ -327,7 +327,7 @@ namespace Boxinator_API.Migrations
                         new
                         {
                             Id = 2,
-                            Name = "RECIEVED"
+                            Name = "RECEIVED"
                         },
                         new
                         {

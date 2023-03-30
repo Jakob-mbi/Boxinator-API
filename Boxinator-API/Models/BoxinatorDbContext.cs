@@ -55,14 +55,14 @@ namespace Boxinator_API.Models
             new User { Sub = "9e305eb4-7639-422d-9432-a3e001c6c5b7" }
             );
             modelBuilder.Entity<Shipment>().HasData(
-            new Shipment { Id = 1, ReciverName = "John Smith", Weight = 50, BoxColor = "Red", DestinationID = 1, UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077", Price = 200 },
-            new Shipment { Id = 2, ReciverName = "Alice Johnson", Weight = 60, BoxColor = "Blue", DestinationID = 14, UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077", Price = 400 },
-            new Shipment { Id = 3, ReciverName = "Bob Thompson", Weight = 70, BoxColor = "Green", DestinationID = 10, UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077", Price = 300 },
-            new Shipment { Id = 4, ReciverName = "John Smith", Weight = 50, BoxColor = "Yellow", DestinationID = 3, UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077", Price = 200 },
-            new Shipment { Id = 5, ReciverName = "Emily Davis", Weight = 20, BoxColor = "Purple", DestinationID = 8, UserSub = "9e305eb4-7639-422d-9432-a3e001c6c5b7", Price = 400 },
-            new Shipment { Id = 6, ReciverName = "Bob Thompson", Weight = 30, BoxColor = "Orange", DestinationID = 17, UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a", Price = 300 },
-             new Shipment { Id = 7, ReciverName = "Emily Davis", Weight = 60, BoxColor = "Pink", DestinationID = 8, UserSub = "9e305eb4-7639-422d-9432-a3e001c6c5b7", Price = 400 },
-            new Shipment { Id = 8, ReciverName = "Bob Davis", Weight = 10, BoxColor = "Orange", DestinationID = 17, UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a", Price = 300 }
+            new Shipment { Id = 1, ReciverName = "John Smith", Weight = 5, BoxColor = "#eb4034", DestinationID = 1, UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077", Price = 200 },
+            new Shipment { Id = 2, ReciverName = "Alice Johnson", Weight = 1, BoxColor = "#15ad07", DestinationID = 14, UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077", Price = 212 },
+            new Shipment { Id = 3, ReciverName = "Bob Thompson", Weight = 1, BoxColor = "#0c1fed", DestinationID = 10, UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077", Price = 208 },
+            new Shipment { Id = 4, ReciverName = "John Smith", Weight = 2, BoxColor = "#fcef2d", DestinationID = 3, UserSub = "44feb5ab-e680-4979-95f6-9cbc18d32077", Price = 200 },
+            new Shipment { Id = 5, ReciverName = "Emily Davis", Weight = 1, BoxColor = "#8e2dfc", DestinationID = 19, UserSub = "9e305eb4-7639-422d-9432-a3e001c6c5b7", Price = 208 },
+            new Shipment { Id = 6, ReciverName = "Bob Thompson", Weight = 5, BoxColor = "#fa05b9", DestinationID = 17, UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a", Price = 235 },
+            new Shipment { Id = 7, ReciverName = "Emily Davis", Weight = 2, BoxColor = "#f76714", DestinationID = 8, UserSub = "9e305eb4-7639-422d-9432-a3e001c6c5b7", Price = 216 },
+            new Shipment { Id = 8, ReciverName = "Bob Davis", Weight = 8, BoxColor = "#1ccfd9", DestinationID = 22, UserSub = "c7643ce3-acaa-470e-8f11-a634dccad52a", Price = 298 }
             );
             modelBuilder.Entity<Shipment>()
                .HasMany(p => p.StatusList)
@@ -82,7 +82,7 @@ namespace Boxinator_API.Models
                            new { StatusListId = 1, ShipmentsListId = 4 },
                            new { StatusListId = 1, ShipmentsListId = 5 },
                            new { StatusListId = 1, ShipmentsListId = 6 },
-                            new { StatusListId = 4, ShipmentsListId = 7 },
+                           new { StatusListId = 4, ShipmentsListId = 7 },
                            new { StatusListId = 5, ShipmentsListId = 8 }
 
                        );
